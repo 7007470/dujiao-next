@@ -12,9 +12,10 @@
 | 功能 JSON 规范 | `docs/boost-feature-schema.md`，实现 `prototype/src/catalog.js` |
 | Go 实现 | **未开始** |
 | 仓库 | `https://github.com/7007470/dujiao-next`（官方仓库的 fork，带完整历史）。`main` 是原版；基线标签 `upstream-base` = `d2e44618`（2026-09-16），和之前读的快照逐字节一致；开发分支 `boost/dev` |
-| S0 进度（2026-10-26） | 已完成：版本固定、分支和标签已推送、文档导入、§6 改动点核对、原版 Go 基线**全部通过**（187 个包 ok，0 失败）。还差：启动测试实例、登录、模拟支付（可以和 S1 并行） |
-| 阻塞 | 沙箱没有 Go，也不能访问 GitHub：编译、测试和 `git push` 要在本机执行 |
-| 下一步唯一建议 | S1 模块骨架：`internal/modules/boost` 分层目录、`boost_` 表迁移、架构测试和 rbac 覆盖测试通过 |
+| S0 进度（2026-10-26） | 已完成：版本固定、分支和标签已推送、文档导入、§6 改动点核对、原版 Go 基线**全部通过**（187 个包 ok，0 失败）。还差：启动测试实例、登录、模拟支付（可以和后续阶段并行） |
+| S1 进度（2026-10-26） | **完成**：15 张 `boost_` / `worker_` 表、迁移入口、约束测试（见 `docs/decisions/002-s1-schema.md`）。gofmt / vet / build 通过；全量 `go test` 189 个包 ok（基线 187 + 新增 2），0 失败；变异检查确认约束测试能抓到索引失效 |
+| 环境 | 开发助手用 `.tools/`（外层目录）里的 Linux Go 1.26.5 和离线模块缓存自己编译测试；`git push` 仍由用户执行。新增依赖时要用户在 Mac 上重新 `go mod download` 到 `.tools/gomod` |
+| 下一步唯一建议 | S2：把 `prototype/src/catalog.js` 移植成 Go（`internal/modules/boost/domain/featuredef`），15 个 catalog 场景 + 6 个示例定义对照 |
 
 原型验证命令：
 
@@ -72,10 +73,10 @@ internal/workflows/boostpoints/  积分到账
 验收：
 
 ```text
-[ ] 迁移可重复执行
-[ ] internal/architecture 的分层测试通过
-[ ] 新管理路由被 authz 角色种子覆盖（rbac_coverage_test 通过）
-[ ] 不修改 Dujiao 原表
+[x] 迁移可重复执行（模块 Migrate 和中央 AutoMigrate 各跑两次）
+[x] internal/architecture 的分层测试通过
+[x] 新管理路由被 authz 角色种子覆盖（S1 不加路由；rbac_coverage_test 通过）
+[x] 不修改 Dujiao 原表（测试断言只新增 boost_ / worker_ 表）
 ```
 
 ## 5. S2：功能 JSON 规范

@@ -5,6 +5,7 @@ import (
 	affiliatedomain "github.com/dujiao-next/internal/modules/affiliate/domain"
 	apicredentialdomain "github.com/dujiao-next/internal/modules/apicredential/domain"
 	auditlogdomain "github.com/dujiao-next/internal/modules/auditlog/domain"
+	booststore "github.com/dujiao-next/internal/modules/boost/infrastructure/gormstore" // BOOST-EXT
 	cardsecretdomain "github.com/dujiao-next/internal/modules/cardsecret/domain"
 	cartdomain "github.com/dujiao-next/internal/modules/cart/domain"
 	categorydomain "github.com/dujiao-next/internal/modules/catalog/category/domain"
@@ -34,6 +35,7 @@ import (
 	siteconnectiondomain "github.com/dujiao-next/internal/modules/siteconnection/domain"
 	broadcastdomain "github.com/dujiao-next/internal/modules/telegram/broadcast/domain"
 	walletdomain "github.com/dujiao-next/internal/modules/wallet/domain"
+	workerstore "github.com/dujiao-next/internal/modules/workerapi/infrastructure/gormstore" // BOOST-EXT
 	"github.com/dujiao-next/internal/platform/database/gormdb"
 
 	"gorm.io/gorm"
@@ -105,6 +107,13 @@ func AutoMigrate() error {
 		return err
 	}
 	if err := resellerstore.Migrate(db); err != nil {
+		return err
+	}
+	// BOOST-EXT: 代练模块和 Worker 接口的表（boost_ / worker_ 前缀），不改原表。见 docs/decisions/002-s1-schema.md。
+	if err := booststore.Migrate(db); err != nil {
+		return err
+	}
+	if err := workerstore.Migrate(db); err != nil {
 		return err
 	}
 	if err := migrateCartSKUUniqueIndex(); err != nil {

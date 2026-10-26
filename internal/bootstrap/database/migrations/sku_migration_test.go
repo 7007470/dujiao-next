@@ -633,3 +633,23 @@ func TestAutoMigrateReplacesSupersededProcurementConstraintName(t *testing.T) {
 		t.Errorf("procurement index repair removed canonical constraint %s", procurementOrderForeignKeyConstraint)
 	}
 }
+
+// BOOST-EXT: 中央 AutoMigrate 必须带上代练模块和 Worker 接口的表，且可重复执行。
+func TestAutoMigrateOwnsBoostAndWorkerSchema(t *testing.T) {
+	db := setupRegistryMigrationTestDB(t)
+	for round := 1; round <= 2; round++ {
+		if err := AutoMigrate(); err != nil {
+			t.Fatalf("auto migrate round %d failed: %v", round, err)
+		}
+	}
+	for _, table := range []string{
+		"boost_games", "boost_game_servers", "boost_features", "boost_feature_versions",
+		"boost_point_packs", "boost_point_accounts", "boost_point_lots", "boost_point_ledger_entries",
+		"boost_user_bindings", "boost_inputs", "boost_tasks", "boost_task_events",
+		"worker_nodes", "worker_leases", "worker_requests",
+	} {
+		if !db.Migrator().HasTable(table) {
+			t.Errorf("central AutoMigrate did not create table %s", table)
+		}
+	}
+}
