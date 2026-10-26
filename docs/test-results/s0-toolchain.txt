@@ -1,0 +1,8 @@
+date:  2026-10-26 16:46:16 +0800
+os:    26.5.1 arm64
+go:    go version go1.26.5 darwin/arm64
+node:  v26.0.0
+pnpm:  missing
+psql:  missing
+redis: Redis server v=8.6.3 sha=00000000:1 malloc=libc bits=64 build=4704405687460536
+HEAD:  d2e44618de03068cbbe874a23a6d7c6a249a79ec

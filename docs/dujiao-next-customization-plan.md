@@ -12,9 +12,9 @@
 | 功能 JSON 规范 | `docs/boost-feature-schema.md`，实现 `prototype/src/catalog.js` |
 | Go 实现 | **未开始** |
 | 仓库 | `https://github.com/7007470/dujiao-next`（官方仓库的 fork，带完整历史）。`main` 是原版；基线标签 `upstream-base` = `d2e44618`（2026-09-16），和之前读的快照逐字节一致；开发分支 `boost/dev` |
-| S0 进度（2026-10-25） | 已完成：版本固定、建分支、文档导入、§6 改动点核对。**还差**：原版 `go test ./...` 基线（沙箱没有 Go，需要在本机跑）、测试实例启动 |
+| S0 进度（2026-10-26） | 已完成：版本固定、分支和标签已推送、文档导入、§6 改动点核对、原版 Go 基线**全部通过**（187 个包 ok，0 失败）。还差：启动测试实例、登录、模拟支付（可以和 S1 并行） |
 | 阻塞 | 沙箱没有 Go，也不能访问 GitHub：编译、测试和 `git push` 要在本机执行 |
-| 下一步唯一建议 | 在本机跑原版基线（命令见 `docs/decisions/000-version.md`）；同时开始 S1 模块骨架 |
+| 下一步唯一建议 | S1 模块骨架：`internal/modules/boost` 分层目录、`boost_` 表迁移、架构测试和 rbac 覆盖测试通过 |
 
 原型验证命令：
 
@@ -50,7 +50,7 @@ S2 和 S4 可以并行。每个阶段都要有测试结果和决策记录。
 
 ```text
 [ ] 固定 commit 能启动，管理员和测试用户能登录
-[ ] 原版 go test ./... 基线结果已存档（命令见 000-version.md，需本机）
+[x] 原版 go test ./... 基线结果已存档（2026-10-26，全部通过，docs/test-results/）
 [ ] 测试订单可创建、模拟支付、关闭；重复支付回调不重复处理
 [ ] 测试环境没有旧库连接串
 [x] docs/decisions/000-version.md 已记录（upstream-base = d2e44618）

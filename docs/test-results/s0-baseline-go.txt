@@ -1,0 +1,367 @@
+=== go mod download ===
+PASS
+=== gofmt ===
+PASS
+=== go vet ===
+PASS
+=== go test ===
+ok  	github.com/dujiao-next/cmd/server	1.463s
+?   	github.com/dujiao-next/internal/admincmd	[no test files]
+ok  	github.com/dujiao-next/internal/app	2.143s
+ok  	github.com/dujiao-next/internal/app/container	2.834s
+ok  	github.com/dujiao-next/internal/app/httpserver	3.655s
+ok  	github.com/dujiao-next/internal/app/httpserver/middleware	4.196s
+?   	github.com/dujiao-next/internal/app/jobs	[no test files]
+ok  	github.com/dujiao-next/internal/app/jobs/consumer	4.755s
+ok  	github.com/dujiao-next/internal/architecture	5.693s
+ok  	github.com/dujiao-next/internal/authz	5.786s
+?   	github.com/dujiao-next/internal/bootstrap/adminauth	[no test files]
+?   	github.com/dujiao-next/internal/bootstrap/adminauthz	[no test files]
+ok  	github.com/dujiao-next/internal/bootstrap/adminuser	6.598s
+?   	github.com/dujiao-next/internal/bootstrap/affiliate	[no test files]
+ok  	github.com/dujiao-next/internal/bootstrap/catalogmapping	7.218s
+?   	github.com/dujiao-next/internal/bootstrap/catalogproduct	[no test files]
+?   	github.com/dujiao-next/internal/bootstrap/channelapi	[no test files]
+?   	github.com/dujiao-next/internal/bootstrap/channeluser	[no test files]
+ok  	github.com/dujiao-next/internal/bootstrap/database/migrations	7.356s
+?   	github.com/dujiao-next/internal/bootstrap/fulfillment	[no test files]
+ok  	github.com/dujiao-next/internal/bootstrap/mailbrand	6.676s
+?   	github.com/dujiao-next/internal/bootstrap/order	[no test files]
+?   	github.com/dujiao-next/internal/bootstrap/payment	[no test files]
+?   	github.com/dujiao-next/internal/bootstrap/publicconfig	[no test files]
+?   	github.com/dujiao-next/internal/bootstrap/reseller	[no test files]
+ok  	github.com/dujiao-next/internal/bootstrap/settingshttp	6.720s
+?   	github.com/dujiao-next/internal/bootstrap/telegramauthcache	[no test files]
+?   	github.com/dujiao-next/internal/bootstrap/telegrambroadcast	[no test files]
+?   	github.com/dujiao-next/internal/bootstrap/upstreamapi	[no test files]
+?   	github.com/dujiao-next/internal/bootstrap/userauth	[no test files]
+?   	github.com/dujiao-next/internal/bootstrap/wallet	[no test files]
+?   	github.com/dujiao-next/internal/cache	[no test files]
+?   	github.com/dujiao-next/internal/config	[no test files]
+?   	github.com/dujiao-next/internal/constants	[no test files]
+ok  	github.com/dujiao-next/internal/crypto	6.108s
+ok  	github.com/dujiao-next/internal/htmltext	5.915s
+?   	github.com/dujiao-next/internal/i18n	[no test files]
+ok  	github.com/dujiao-next/internal/logger	5.790s
+ok  	github.com/dujiao-next/internal/modules/adproxy/application	5.269s
+?   	github.com/dujiao-next/internal/modules/adproxy/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/adproxy/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/adproxy/infrastructure/adgateway	5.744s
+?   	github.com/dujiao-next/internal/modules/adproxy/transport/http	[no test files]
+?   	github.com/dujiao-next/internal/modules/affiliate/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/affiliate/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/affiliate/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/affiliate/infrastructure/gormstore	5.432s
+ok  	github.com/dujiao-next/internal/modules/affiliate/integrationtest	5.625s
+?   	github.com/dujiao-next/internal/modules/affiliate/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/affiliate/transport/presenter	4.994s
+?   	github.com/dujiao-next/internal/modules/apicredential/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/apicredential/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/apicredential/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/apicredential/infrastructure/gormstore	5.516s
+ok  	github.com/dujiao-next/internal/modules/apicredential/integrationtest	5.276s
+?   	github.com/dujiao-next/internal/modules/apicredential/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/auditlog/application	5.259s
+?   	github.com/dujiao-next/internal/modules/auditlog/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/auditlog/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/auditlog/infrastructure/gormstore	5.514s
+?   	github.com/dujiao-next/internal/modules/auditlog/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/captcha/application	5.526s
+?   	github.com/dujiao-next/internal/modules/captcha/contract	[no test files]
+ok  	github.com/dujiao-next/internal/modules/captcha/infrastructure/turnstile	5.572s
+ok  	github.com/dujiao-next/internal/modules/captcha/transport/http	5.380s
+?   	github.com/dujiao-next/internal/modules/cardsecret/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/cardsecret/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/cardsecret/domain	[no test files]
+?   	github.com/dujiao-next/internal/modules/cardsecret/infrastructure/gormstore	[no test files]
+ok  	github.com/dujiao-next/internal/modules/cardsecret/integrationtest	5.495s
+?   	github.com/dujiao-next/internal/modules/cardsecret/transport/http	[no test files]
+?   	github.com/dujiao-next/internal/modules/cart/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/cart/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/cart/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/cart/infrastructure/gormstore	5.114s
+ok  	github.com/dujiao-next/internal/modules/cart/transport/http	5.357s
+?   	github.com/dujiao-next/internal/modules/cart/transport/presenter	[no test files]
+ok  	github.com/dujiao-next/internal/modules/catalog	5.252s
+?   	github.com/dujiao-next/internal/modules/catalog/category/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/catalog/category/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/catalog/category/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/catalog/category/infrastructure/gormstore	5.273s
+ok  	github.com/dujiao-next/internal/modules/catalog/category/integrationtest	5.378s
+?   	github.com/dujiao-next/internal/modules/catalog/category/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/catalog/category/transport/presenter	5.083s
+ok  	github.com/dujiao-next/internal/modules/catalog/mapping/application	5.067s
+?   	github.com/dujiao-next/internal/modules/catalog/mapping/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/catalog/mapping/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/catalog/mapping/infrastructure/gormstore	5.128s
+ok  	github.com/dujiao-next/internal/modules/catalog/mapping/integrationtest	5.197s
+?   	github.com/dujiao-next/internal/modules/catalog/mapping/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/catalog/product/application	4.999s
+ok  	github.com/dujiao-next/internal/modules/catalog/product/application/admin	4.985s
+ok  	github.com/dujiao-next/internal/modules/catalog/product/application/write	4.943s
+?   	github.com/dujiao-next/internal/modules/catalog/product/contract	[no test files]
+ok  	github.com/dujiao-next/internal/modules/catalog/product/domain	4.992s
+ok  	github.com/dujiao-next/internal/modules/catalog/product/integrationtest/application	5.422s
+ok  	github.com/dujiao-next/internal/modules/catalog/product/integrationtest/transport	5.279s
+ok  	github.com/dujiao-next/internal/modules/catalog/product/manualform	5.192s
+ok  	github.com/dujiao-next/internal/modules/catalog/product/store/gormstore	5.345s
+ok  	github.com/dujiao-next/internal/modules/catalog/product/transport/http	5.199s
+?   	github.com/dujiao-next/internal/modules/catalog/product/transport/presenter	[no test files]
+ok  	github.com/dujiao-next/internal/modules/channelapi/integrationtest	5.219s
+ok  	github.com/dujiao-next/internal/modules/channelapi/transport/http	5.289s
+ok  	github.com/dujiao-next/internal/modules/channelclient/application	5.301s
+?   	github.com/dujiao-next/internal/modules/channelclient/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/channelclient/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/channelclient/infrastructure/gormstore	5.369s
+?   	github.com/dujiao-next/internal/modules/channelclient/transport/http	[no test files]
+?   	github.com/dujiao-next/internal/modules/compliance/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/compliance/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/compliance/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/compliance/integrationtest	5.523s
+?   	github.com/dujiao-next/internal/modules/compliance/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/content/application	5.000s
+?   	github.com/dujiao-next/internal/modules/content/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/content/domain	[no test files]
+?   	github.com/dujiao-next/internal/modules/content/infrastructure/filestore/local	[no test files]
+ok  	github.com/dujiao-next/internal/modules/content/infrastructure/gormstore	5.330s
+ok  	github.com/dujiao-next/internal/modules/content/integrationtest/application	5.532s
+ok  	github.com/dujiao-next/internal/modules/content/integrationtest/http	5.513s
+ok  	github.com/dujiao-next/internal/modules/content/transport/http	5.661s
+ok  	github.com/dujiao-next/internal/modules/content/transport/presenter	5.424s
+?   	github.com/dujiao-next/internal/modules/coupon/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/coupon/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/coupon/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/coupon/infrastructure/gormstore	5.457s
+ok  	github.com/dujiao-next/internal/modules/coupon/integrationtest	5.514s
+ok  	github.com/dujiao-next/internal/modules/coupon/transport/http	5.484s
+ok  	github.com/dujiao-next/internal/modules/dashboard/application	5.424s
+?   	github.com/dujiao-next/internal/modules/dashboard/contract	[no test files]
+ok  	github.com/dujiao-next/internal/modules/dashboard/infrastructure/gormstore	5.363s
+ok  	github.com/dujiao-next/internal/modules/dashboard/transport/http	4.731s
+?   	github.com/dujiao-next/internal/modules/downstreamcallback/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/downstreamcallback/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/downstreamcallback/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/downstreamcallback/infrastructure/callbackclient	4.888s
+?   	github.com/dujiao-next/internal/modules/downstreamcallback/infrastructure/credentialreader	[no test files]
+ok  	github.com/dujiao-next/internal/modules/downstreamcallback/infrastructure/gormstore	4.610s
+ok  	github.com/dujiao-next/internal/modules/downstreamcallback/infrastructure/orderreader	4.746s
+?   	github.com/dujiao-next/internal/modules/downstreamcallback/infrastructure/queueadapter	[no test files]
+ok  	github.com/dujiao-next/internal/modules/downstreamcallback/integrationtest	4.709s
+?   	github.com/dujiao-next/internal/modules/fulfillment/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/fulfillment/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/fulfillment/domain	[no test files]
+?   	github.com/dujiao-next/internal/modules/fulfillment/infrastructure/gormstore	[no test files]
+?   	github.com/dujiao-next/internal/modules/fulfillment/infrastructure/queueadapter	[no test files]
+ok  	github.com/dujiao-next/internal/modules/fulfillment/integrationtest/application	4.298s
+?   	github.com/dujiao-next/internal/modules/fulfillment/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/giftcard/application	4.711s
+?   	github.com/dujiao-next/internal/modules/giftcard/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/giftcard/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/giftcard/infrastructure/gormstore	4.610s
+?   	github.com/dujiao-next/internal/modules/giftcard/infrastructure/settingscurrency	[no test files]
+ok  	github.com/dujiao-next/internal/modules/giftcard/integrationtest	4.243s
+ok  	github.com/dujiao-next/internal/modules/giftcard/transport/http	4.192s
+?   	github.com/dujiao-next/internal/modules/giftcard/transport/presenter	[no test files]
+ok  	github.com/dujiao-next/internal/modules/identity/admin/application	5.019s
+?   	github.com/dujiao-next/internal/modules/identity/admin/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/identity/admin/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/identity/admin/infrastructure/gormstore	5.220s
+?   	github.com/dujiao-next/internal/modules/identity/adminauth/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/identity/adminauth/challenge	[no test files]
+ok  	github.com/dujiao-next/internal/modules/identity/adminauth/integrationtest	26.535s
+?   	github.com/dujiao-next/internal/modules/identity/adminauth/totp/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/identity/adminauth/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/identity/adminauthorization/transport/http	4.933s
+?   	github.com/dujiao-next/internal/modules/identity/emailverification/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/identity/emailverification/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/identity/emailverification/infrastructure/gormstore	5.438s
+?   	github.com/dujiao-next/internal/modules/identity/externalidentity/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/identity/externalidentity/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/identity/externalidentity/infrastructure/gormstore	5.509s
+ok  	github.com/dujiao-next/internal/modules/identity/googleauth/application	7.361s
+?   	github.com/dujiao-next/internal/modules/identity/jwttoken	[no test files]
+ok  	github.com/dujiao-next/internal/modules/identity/telegramauth/application	5.984s
+ok  	github.com/dujiao-next/internal/modules/identity/totp/application	5.396s
+?   	github.com/dujiao-next/internal/modules/identity/user/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/identity/user/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/identity/user/infrastructure/gormstore	5.655s
+ok  	github.com/dujiao-next/internal/modules/identity/user/transport/http/admin	5.078s
+ok  	github.com/dujiao-next/internal/modules/identity/userauth/application	5.353s
+?   	github.com/dujiao-next/internal/modules/identity/userauth/challenge	[no test files]
+?   	github.com/dujiao-next/internal/modules/identity/userauth/infrastructure/cachestore	[no test files]
+?   	github.com/dujiao-next/internal/modules/identity/userauth/infrastructure/gormstore	[no test files]
+ok  	github.com/dujiao-next/internal/modules/identity/userauth/integrationtest	34.199s
+?   	github.com/dujiao-next/internal/modules/identity/userauth/totp/application	[no test files]
+ok  	github.com/dujiao-next/internal/modules/identity/userauth/transport/http	4.150s
+ok  	github.com/dujiao-next/internal/modules/identity/userauth/transport/presenter	4.470s
+?   	github.com/dujiao-next/internal/modules/memberlevel/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/memberlevel/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/memberlevel/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/memberlevel/infrastructure/gormstore	4.317s
+ok  	github.com/dujiao-next/internal/modules/memberlevel/integrationtest	4.727s
+ok  	github.com/dujiao-next/internal/modules/memberlevel/transport/http	4.472s
+?   	github.com/dujiao-next/internal/modules/memberlevel/transport/presenter	[no test files]
+ok  	github.com/dujiao-next/internal/modules/notification/application	4.855s
+?   	github.com/dujiao-next/internal/modules/notification/application/format	[no test files]
+?   	github.com/dujiao-next/internal/modules/notification/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/notification/domain	[no test files]
+?   	github.com/dujiao-next/internal/modules/notification/infrastructure/asyncqueue	[no test files]
+ok  	github.com/dujiao-next/internal/modules/notification/infrastructure/feishu	4.763s
+ok  	github.com/dujiao-next/internal/modules/notification/infrastructure/gormstore	4.612s
+ok  	github.com/dujiao-next/internal/modules/notification/infrastructure/smtp	3.739s
+ok  	github.com/dujiao-next/internal/modules/notification/transport/http	3.752s
+ok  	github.com/dujiao-next/internal/modules/order/application	3.486s
+?   	github.com/dujiao-next/internal/modules/order/application/refund	[no test files]
+?   	github.com/dujiao-next/internal/modules/order/contract	[no test files]
+ok  	github.com/dujiao-next/internal/modules/order/domain	3.601s
+ok  	github.com/dujiao-next/internal/modules/order/infrastructure/gormstore	3.717s
+?   	github.com/dujiao-next/internal/modules/order/infrastructure/queueadapter	[no test files]
+ok  	github.com/dujiao-next/internal/modules/order/integrationtest/application	3.906s
+ok  	github.com/dujiao-next/internal/modules/order/integrationtest/refund	3.886s
+?   	github.com/dujiao-next/internal/modules/order/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/order/transport/presenter	3.688s
+ok  	github.com/dujiao-next/internal/modules/orderrisk/application	3.894s
+ok  	github.com/dujiao-next/internal/modules/orderrisk/contract	3.739s
+?   	github.com/dujiao-next/internal/modules/orderrisk/domain	[no test files]
+?   	github.com/dujiao-next/internal/modules/orderrisk/infrastructure/redislimiter	[no test files]
+ok  	github.com/dujiao-next/internal/modules/payment/application	2.251s
+?   	github.com/dujiao-next/internal/modules/payment/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/payment/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/adapters/alipay	1.956s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/adapters/bepusdt	2.316s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/adapters/dujiaopay	2.576s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/adapters/epay	2.999s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/adapters/epusdt	3.433s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/adapters/okpay	3.850s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/adapters/paypal	3.988s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/adapters/stripe	3.279s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/adapters/tokenpay	3.497s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/adapters/wechatpay	5.641s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/alipay	5.241s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/bepusdt	3.464s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/common	3.502s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/dujiaopay	3.246s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/epay	4.476s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/epusdt	3.502s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/okpay	3.867s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/paypal	3.902s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/provider	3.441s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/stripe	3.384s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/tokenpay	3.362s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gateway/wechatpay	8.861s
+ok  	github.com/dujiao-next/internal/modules/payment/infrastructure/gormstore	4.130s
+?   	github.com/dujiao-next/internal/modules/payment/infrastructure/queueadapter	[no test files]
+ok  	github.com/dujiao-next/internal/modules/payment/integrationtest/callback	3.420s
+ok  	github.com/dujiao-next/internal/modules/payment/integrationtest/channels	3.667s
+ok  	github.com/dujiao-next/internal/modules/payment/integrationtest/exchange	3.860s
+ok  	github.com/dujiao-next/internal/modules/payment/integrationtest/gatewayconfig	4.526s
+ok  	github.com/dujiao-next/internal/modules/payment/transport/http	4.194s
+ok  	github.com/dujiao-next/internal/modules/payment/transport/http/callback	4.505s
+ok  	github.com/dujiao-next/internal/modules/payment/transport/presenter	5.068s
+ok  	github.com/dujiao-next/internal/modules/procurement/application	4.241s
+?   	github.com/dujiao-next/internal/modules/procurement/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/procurement/domain	[no test files]
+?   	github.com/dujiao-next/internal/modules/procurement/infrastructure/gormstore	[no test files]
+?   	github.com/dujiao-next/internal/modules/procurement/infrastructure/mappingreader	[no test files]
+?   	github.com/dujiao-next/internal/modules/procurement/infrastructure/notificationadapter	[no test files]
+?   	github.com/dujiao-next/internal/modules/procurement/infrastructure/orderreader	[no test files]
+?   	github.com/dujiao-next/internal/modules/procurement/infrastructure/queueadapter	[no test files]
+?   	github.com/dujiao-next/internal/modules/procurement/infrastructure/upstreamgateway	[no test files]
+ok  	github.com/dujiao-next/internal/modules/procurement/integrationtest	3.786s
+?   	github.com/dujiao-next/internal/modules/procurement/transport/http	[no test files]
+?   	github.com/dujiao-next/internal/modules/promotion/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/promotion/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/promotion/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/promotion/infrastructure/gormstore	3.934s
+ok  	github.com/dujiao-next/internal/modules/promotion/transport/http	3.724s
+ok  	github.com/dujiao-next/internal/modules/reconciliation/application	3.697s
+?   	github.com/dujiao-next/internal/modules/reconciliation/contract	[no test files]
+ok  	github.com/dujiao-next/internal/modules/reconciliation/domain	3.930s
+?   	github.com/dujiao-next/internal/modules/reconciliation/infrastructure/gormstore	[no test files]
+?   	github.com/dujiao-next/internal/modules/reconciliation/infrastructure/notificationadapter	[no test files]
+?   	github.com/dujiao-next/internal/modules/reconciliation/infrastructure/procurementreader	[no test files]
+?   	github.com/dujiao-next/internal/modules/reconciliation/infrastructure/queueadapter	[no test files]
+?   	github.com/dujiao-next/internal/modules/reconciliation/infrastructure/upstreamreader	[no test files]
+ok  	github.com/dujiao-next/internal/modules/reconciliation/transport/http	3.501s
+ok  	github.com/dujiao-next/internal/modules/reporting/application	3.878s
+?   	github.com/dujiao-next/internal/modules/reporting/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/reporting/transport/http	4.021s
+ok  	github.com/dujiao-next/internal/modules/reseller/application	4.008s
+ok  	github.com/dujiao-next/internal/modules/reseller/contract	3.667s
+?   	github.com/dujiao-next/internal/modules/reseller/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/reseller/infrastructure/gormstore	3.812s
+ok  	github.com/dujiao-next/internal/modules/reseller/integrationtest	2.659s
+ok  	github.com/dujiao-next/internal/modules/reseller/transport/http	2.457s
+ok  	github.com/dujiao-next/internal/modules/reseller/transport/http/admin	2.949s
+ok  	github.com/dujiao-next/internal/modules/reseller/transport/http/presenter	3.395s
+?   	github.com/dujiao-next/internal/modules/reseller/transport/http/shared	[no test files]
+ok  	github.com/dujiao-next/internal/modules/reseller/transport/http/user	3.794s
+ok  	github.com/dujiao-next/internal/modules/settings/application	4.326s
+?   	github.com/dujiao-next/internal/modules/settings/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/settings/infrastructure/gormstore	[no test files]
+ok  	github.com/dujiao-next/internal/modules/settings/schema/integration	4.748s
+ok  	github.com/dujiao-next/internal/modules/settings/schema/messaging	5.044s
+ok  	github.com/dujiao-next/internal/modules/settings/schema/security	5.499s
+ok  	github.com/dujiao-next/internal/modules/settings/schema/storefront	5.242s
+?   	github.com/dujiao-next/internal/modules/settings/schema/value	[no test files]
+ok  	github.com/dujiao-next/internal/modules/settings/transport/http	4.727s
+ok  	github.com/dujiao-next/internal/modules/settings/transport/http/public	5.083s
+?   	github.com/dujiao-next/internal/modules/siteconnection/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/siteconnection/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/siteconnection/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/siteconnection/infrastructure/gormstore	5.223s
+ok  	github.com/dujiao-next/internal/modules/siteconnection/integrationtest	5.235s
+?   	github.com/dujiao-next/internal/modules/siteconnection/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/sitemap/application	5.068s
+?   	github.com/dujiao-next/internal/modules/sitemap/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/sitemap/domain	[no test files]
+?   	github.com/dujiao-next/internal/modules/sitemap/infrastructure/cacheadapter	[no test files]
+?   	github.com/dujiao-next/internal/modules/sitemap/infrastructure/catalogreader	[no test files]
+?   	github.com/dujiao-next/internal/modules/sitemap/infrastructure/settingsbrand	[no test files]
+ok  	github.com/dujiao-next/internal/modules/sitemap/integrationtest	4.977s
+ok  	github.com/dujiao-next/internal/modules/sitemap/transport/http	4.555s
+ok  	github.com/dujiao-next/internal/modules/telegram/broadcast/application	4.494s
+?   	github.com/dujiao-next/internal/modules/telegram/broadcast/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/telegram/broadcast/domain	[no test files]
+ok  	github.com/dujiao-next/internal/modules/telegram/broadcast/infrastructure/gormstore	4.562s
+?   	github.com/dujiao-next/internal/modules/telegram/broadcast/transport/http	[no test files]
+?   	github.com/dujiao-next/internal/modules/telegram/channelbot/transport/http	[no test files]
+ok  	github.com/dujiao-next/internal/modules/telegram/notify/application	4.610s
+?   	github.com/dujiao-next/internal/modules/telegram/notify/contract	[no test files]
+ok  	github.com/dujiao-next/internal/modules/telegram/notify/infrastructure/botapi	4.414s
+ok  	github.com/dujiao-next/internal/modules/upload/application	4.495s
+?   	github.com/dujiao-next/internal/modules/upload/contract	[no test files]
+ok  	github.com/dujiao-next/internal/modules/upload/infrastructure/localstore	4.612s
+ok  	github.com/dujiao-next/internal/modules/upload/transport/http	4.348s
+ok  	github.com/dujiao-next/internal/modules/upstreamapi/transport/http	4.540s
+?   	github.com/dujiao-next/internal/modules/wallet/application	[no test files]
+?   	github.com/dujiao-next/internal/modules/wallet/contract	[no test files]
+?   	github.com/dujiao-next/internal/modules/wallet/domain	[no test files]
+?   	github.com/dujiao-next/internal/modules/wallet/infrastructure/gormstore	[no test files]
+ok  	github.com/dujiao-next/internal/modules/wallet/integrationtest	4.783s
+ok  	github.com/dujiao-next/internal/modules/wallet/transport/http	4.522s
+ok  	github.com/dujiao-next/internal/modules/wallet/transport/presenter	4.919s
+ok  	github.com/dujiao-next/internal/persistence/gormutil	5.078s
+ok  	github.com/dujiao-next/internal/platform/database/gormdb	4.754s
+?   	github.com/dujiao-next/internal/platform/http/channelresponse	[no test files]
+ok  	github.com/dujiao-next/internal/platform/http/ginutil	4.767s
+?   	github.com/dujiao-next/internal/platform/http/response	[no test files]
+?   	github.com/dujiao-next/internal/platform/http/system	[no test files]
+?   	github.com/dujiao-next/internal/queue	[no test files]
+ok  	github.com/dujiao-next/internal/selfupdate	4.952s
+ok  	github.com/dujiao-next/internal/shared/jsonmap	5.107s
+ok  	github.com/dujiao-next/internal/shared/jsonslice	5.081s
+?   	github.com/dujiao-next/internal/shared/mailbrand	[no test files]
+ok  	github.com/dujiao-next/internal/shared/money	4.580s
+ok  	github.com/dujiao-next/internal/shared/outboundctx	4.552s
+ok  	github.com/dujiao-next/internal/shared/passwordpolicy	4.509s
+?   	github.com/dujiao-next/internal/shared/serial	[no test files]
+?   	github.com/dujiao-next/internal/telegramidentity	[no test files]
+?   	github.com/dujiao-next/internal/testkit/memorysettings	[no test files]
+ok  	github.com/dujiao-next/internal/upstream	4.406s
+ok  	github.com/dujiao-next/internal/version	4.464s
+ok  	github.com/dujiao-next/internal/web	4.135s
+?   	github.com/dujiao-next/internal/workflows/giftcardredeem/infrastructure/gormuow	[no test files]
+PASS
+=== go build ===
+PASS

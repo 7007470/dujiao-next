@@ -1,6 +1,6 @@
 # 000 固定上游版本
 
-日期：2026-10-25　状态：**已确认（版本）**；原版测试基线待本机补充
+日期：2026-10-25　状态：**已确认**（原版测试基线 2026-10-26 全部通过）
 
 ## 基线
 
@@ -22,19 +22,21 @@
 | 数据库 | SQLite（默认）/ PostgreSQL | `config.yml.example` |
 | Redis | 可选（asynq），示例配置里默认开启 | README、`config.yml.example` |
 
-## 待本机补充：原版测试基线
+## 原版测试基线（2026-10-26，用户本机）
 
-在 `upstream-base` 上跑上游 CI 的同一组检查，结果存到 `docs/test-results/`：
+在 `upstream-base` 上按上游 CI 的顺序跑检查，结果全部通过：
 
-```bash
-git switch --detach upstream-base
-mkdir -p ../s0 && { go version; node --version; pnpm --version; } > ../s0/toolchain.txt 2>&1
-{ gofmt -l $(git ls-files '*.go'); go vet ./...; go test -count=1 ./...; go build -o /tmp/dujiao-next ./cmd/server; } > ../s0/baseline-go.txt 2>&1; echo "exit=$?" >> ../s0/baseline-go.txt
-git switch boost/dev
-mkdir -p docs/test-results && cp ../s0/*.txt docs/test-results/
-```
+| 检查 | 结果 |
+|---|---|
+| `go mod download` | PASS |
+| `gofmt -l`（git 跟踪的 .go 文件） | PASS（没有未格式化的文件） |
+| `go vet ./...` | PASS |
+| `go test -count=1 ./...` | PASS：187 个包通过，170 个包没有测试，0 失败 |
+| `go build ./cmd/server` | PASS |
 
-先在 detached 的基线上跑，再切回 `boost/dev` 拷入结果，这样基线反映的是原版代码。原版自带的失败也照实记录，后面用来区分新引入的问题。
+环境：macOS 26.5.1 arm64、Go 1.26.5、Node 26.0.0（上游 CI 用 24.11.1）、Redis 8.6.3；本机没有 pnpm 和 PostgreSQL。完整日志：`docs/test-results/s0-baseline-go.txt`、`s0-toolchain.txt`。
+
+所以之后 `boost/dev` 上任何 vet / test 失败都是我们引入的。前端（pnpm）和 PostgreSQL 的基线等用到时再补：S4 并发测试需要 PostgreSQL，S7 需要 pnpm。
 
 ## 决定
 
