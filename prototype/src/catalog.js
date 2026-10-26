@@ -183,13 +183,15 @@
           if (!ref || !['radio', 'select'].includes(ref.type)) err(p + '.cost_by', 'cost_by 必须引用前面的 radio 或 select 字段');
           else if (cat && Array.isArray(cat.groups)) {
             const modes = new Set((ref.options || []).map((o) => o.value));
+            // 目录本身的结构错误已在上面报过，这里跳过不合法的分组 / 条目，不能抛异常
+            const itemsOf = (g) => (isObj(g) && Array.isArray(g.items) ? g.items : []);
             cat.groups.forEach((g, gi) =>
-              (g.items || []).forEach((it, ii) => {
-                if (isObj(it.cost)) for (const mk of Object.keys(it.cost)) if (!modes.has(mk)) err(`catalogs.${f.catalog}.groups[${gi}].items[${ii}].cost.${mk}`, `「${mk}」不是 ${f.cost_by} 的选项`);
+              itemsOf(g).forEach((it, ii) => {
+                if (isObj(it) && isObj(it.cost)) for (const mk of Object.keys(it.cost)) if (!modes.has(mk)) err(`catalogs.${f.catalog}.groups[${gi}].items[${ii}].cost.${mk}`, `「${mk}」不是 ${f.cost_by} 的选项`);
               })
             );
           }
-        } else if (cat && Array.isArray(cat.groups) && cat.groups.some((g) => (g.items || []).some((it) => isObj(it.cost)))) {
+        } else if (cat && Array.isArray(cat.groups) && cat.groups.some((g) => isObj(g) && Array.isArray(g.items) && g.items.some((it) => isObj(it) && isObj(it.cost)))) {
           err(p + '.cost_by', '目录里有按模式区分的 cost，需要用 cost_by 指定模式字段');
         }
       }

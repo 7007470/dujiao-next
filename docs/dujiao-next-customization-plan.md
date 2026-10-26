@@ -15,7 +15,9 @@
 | S0 进度（2026-10-26） | 已完成：版本固定、分支和标签已推送、文档导入、§6 改动点核对、原版 Go 基线**全部通过**（187 个包 ok，0 失败）。还差：启动测试实例、登录、模拟支付（可以和后续阶段并行） |
 | S1 进度（2026-10-26） | **完成**：15 张 `boost_` / `worker_` 表、迁移入口、约束测试（见 `docs/decisions/002-s1-schema.md`）。gofmt / vet / build 通过；全量 `go test` 189 个包 ok（基线 187 + 新增 2），0 失败；变异检查确认约束测试能抓到索引失效 |
 | 环境 | 开发助手用 `.tools/`（外层目录）里的 Linux Go 1.26.5 和离线模块缓存自己编译测试；`git push` 仍由用户执行。新增依赖时要用户在 Mac 上重新 `go mod download` 到 `.tools/gomod` |
-| 下一步唯一建议 | S2：把 `prototype/src/catalog.js` 移植成 Go（`internal/modules/boost/domain/featuredef`），15 个 catalog 场景 + 6 个示例定义对照 |
+| S2 进度（2026-10-26） | **完成**：`internal/modules/boost/domain/featuredef`，与原型逐字节一致（316 条校验 + 402 条编译对照用例，见 `docs/decisions/003-featuredef-go.md`） |
+| 开发方式（用户 2026-10-26 选定） | 每块后端做完就同时做对应的后台 / 用户页面，每一步都能在浏览器里验收；不再等到 S7 统一做页面 |
+| 下一步唯一建议 | S3：后台游戏 / 区服 / 功能接口 + 管理页面（含按 JSON 自动生成的下单表单预览） |
 
 原型验证命令：
 
@@ -86,15 +88,12 @@ internal/workflows/boostpoints/  积分到账
 验收：
 
 ```text
-[ ] prototype/test/catalog.test.js 的 15 个场景都有 Go 测试且通过
-[ ] 用 seed.js 里 6 个示例定义做对照：同样的参数，JS 和 Go 的 total / units / steps 完全一致
-[ ] 前端不再自己算价格：报价接口直接返回 Compile 结果
+[x] prototype/test/catalog.test.js 的 15 个场景都有 Go 测试且通过（全部收进 golden.json）
+[x] seed.js 6 个示例定义对照：JS 和 Go 的完整输出逐字段一致（不只是 total / units / steps）
+[ ] 前端不再自己算价格：报价接口直接返回 Compile 结果（S3 预览接口 / S5 用户报价接口）
 ```
 
-前端（Vue）也需要可见性和报价，有两种做法，S2 时做决定并记录：
-
-1. 前端每次改动调用 `POST /boost/quote`（推荐，单一实现，代价是请求数）；
-2. 前端用原型的 JS 版做即时展示，提交时以服务端结果为准，用对照测试保证一致。
+前端报价的做法已定（见 `docs/decisions/003-featuredef-go.md`）：前端调用服务端报价接口，不在浏览器里重复实现规则。
 
 ## 6. S3：后台游戏与功能
 
