@@ -10,6 +10,7 @@ import (
 	affiliatetransport "github.com/dujiao-next/internal/modules/affiliate/transport/http"
 	apicredentialtransport "github.com/dujiao-next/internal/modules/apicredential/transport/http"
 	auditlogtransport "github.com/dujiao-next/internal/modules/auditlog/transport/http"
+	boosttransport "github.com/dujiao-next/internal/modules/boost/transport/http" // BOOST-EXT
 	cardsecrettransport "github.com/dujiao-next/internal/modules/cardsecret/transport/http"
 	categoryhttp "github.com/dujiao-next/internal/modules/catalog/category/transport/http"
 	mappinghttp "github.com/dujiao-next/internal/modules/catalog/mapping/transport/http"
@@ -156,6 +157,9 @@ func registerAdminRoutes(
 	fulfillmenttransport.RegisterAdminRoutes(authorized, adminFulfillmentHandler)
 	cardsecrettransport.RegisterAdminRoutes(authorized, adminCardSecretHandler)
 	giftcardtransport.RegisterAdminRoutes(authorized, adminGiftCardHandler)
+
+	// BOOST-EXT: 代练后台（游戏 / 区服 / 功能），写操作记入权限审计日志
+	boosttransport.RegisterAdminRoutes(authorized, boosttransport.NewAdminHandler(c.BoostCatalogService, c.AuthzAuditService))
 
 	// 优惠券与活动价
 	coupontransport.RegisterAdminRoutes(authorized, adminCouponHandler)

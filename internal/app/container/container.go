@@ -10,6 +10,8 @@ import (
 	apicredentialcontract "github.com/dujiao-next/internal/modules/apicredential/contract"
 	auditlogapp "github.com/dujiao-next/internal/modules/auditlog/application"
 	auditlogcontract "github.com/dujiao-next/internal/modules/auditlog/contract"
+	boostapp "github.com/dujiao-next/internal/modules/boost/application"                    // BOOST-EXT
+	boostgormstore "github.com/dujiao-next/internal/modules/boost/infrastructure/gormstore" // BOOST-EXT
 	captchaapp "github.com/dujiao-next/internal/modules/captcha/application"
 	cardsecretapp "github.com/dujiao-next/internal/modules/cardsecret/application"
 	cardsecretgormstore "github.com/dujiao-next/internal/modules/cardsecret/infrastructure/gormstore"
@@ -98,6 +100,7 @@ type Container struct {
 	CardSecretRepo         *cardsecretgormstore.Store
 	CardSecretBatchRepo    *cardsecretgormstore.BatchStore
 	GiftCardRepo           *giftcardgormstore.Store
+	BoostCatalogRepo       *boostgormstore.CatalogStore // BOOST-EXT
 	FulfillmentStore       fulfillmentcontract.Store
 	ProductRepo            *productgormstore.ProductStore
 	ProductSKURepo         *productgormstore.SKUStore
@@ -161,6 +164,7 @@ type Container struct {
 	PaymentService                *paymentapp.PaymentService
 	CardSecretService             *cardsecretapp.Service
 	GiftCardService               *giftcardapp.Service
+	BoostCatalogService           *boostapp.CatalogService // BOOST-EXT
 	UserLoginLogService           *auditlogapp.UserLoginService
 	AuthzAuditService             *auditlogapp.AuthzService
 	AdminLoginLogService          *auditlogapp.AdminLoginService

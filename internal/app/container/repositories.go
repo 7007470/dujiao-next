@@ -6,6 +6,7 @@ import (
 	affiliategormstore "github.com/dujiao-next/internal/modules/affiliate/infrastructure/gormstore"
 	apicredentialgormstore "github.com/dujiao-next/internal/modules/apicredential/infrastructure/gormstore"
 	auditloggormstore "github.com/dujiao-next/internal/modules/auditlog/infrastructure/gormstore"
+	boostgormstore "github.com/dujiao-next/internal/modules/boost/infrastructure/gormstore" // BOOST-EXT
 	cardsecretgormstore "github.com/dujiao-next/internal/modules/cardsecret/infrastructure/gormstore"
 	cartgormstore "github.com/dujiao-next/internal/modules/cart/infrastructure/gormstore"
 	categorygormstore "github.com/dujiao-next/internal/modules/catalog/category/infrastructure/gormstore"
@@ -52,6 +53,7 @@ func (c *Container) initRepositories() error {
 	c.CardSecretRepo = cardsecretgormstore.New(db)
 	c.CardSecretBatchRepo = cardsecretgormstore.NewBatch(db)
 	c.GiftCardRepo = giftcardgormstore.New(db)
+	c.BoostCatalogRepo = boostgormstore.NewCatalogStore(db) // BOOST-EXT
 	c.FulfillmentStore = fulfillmentgormstore.New(db)
 	c.ProductRepo = productgormstore.NewProductStore(db)
 	c.ProductSKURepo = productgormstore.NewSKUStore(db)

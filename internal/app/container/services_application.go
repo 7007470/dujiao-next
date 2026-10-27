@@ -5,6 +5,7 @@ import (
 
 	adproxyapp "github.com/dujiao-next/internal/modules/adproxy/application"
 	adproxygateway "github.com/dujiao-next/internal/modules/adproxy/infrastructure/adgateway"
+	boostapp "github.com/dujiao-next/internal/modules/boost/application" // BOOST-EXT
 	categoryapp "github.com/dujiao-next/internal/modules/catalog/category/application"
 
 	"github.com/dujiao-next/internal/logger"
@@ -132,6 +133,7 @@ func (c *Container) initApplicationServices() {
 		Currency: giftcardsettingscurrency.New(c.SettingService),
 		Redeemer: giftcardredeemgormuow.New(c.GiftCardRepo, c.WalletService),
 	})
+	c.BoostCatalogService = boostapp.NewCatalogService(c.BoostCatalogRepo) // BOOST-EXT
 	c.CouponAdminService = couponapp.NewAdminService(c.CouponRepo)
 	c.PromotionAdminService = promotionapp.NewAdminService(c.PromotionRepo)
 	c.ContentBannerService = contentapp.NewBannerService(
