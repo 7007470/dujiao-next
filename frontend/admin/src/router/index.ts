@@ -54,6 +54,19 @@ const routes = [
         component: () => import('@/views/admin/CardSecretExports.vue'),
         meta: { permission: 'GET:/admin/card-secrets' },
       },
+      // BOOST-EXT: 代练
+      {
+        path: 'boost/games',
+        name: 'boost-games',
+        component: () => import('@/views/admin/BoostGames.vue'),
+        meta: { permission: 'GET:/admin/boost/games' },
+      },
+      {
+        path: 'boost/games/:id/features',
+        name: 'boost-features',
+        component: () => import('@/views/admin/BoostFeatures.vue'),
+        meta: { permission: 'GET:/admin/boost/games/:id/features' },
+      },
       {
         path: 'gift-cards',
         name: 'gift-cards',

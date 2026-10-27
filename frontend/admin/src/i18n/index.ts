@@ -651,6 +651,7 @@ const messages = {
         settings: '系统设置',
       },
       navGroups: {
+        boostManagement: '代练管理', // BOOST-EXT
         dashboard: '仪表盘',
         productManagement: '商品管理',
         orderManagement: '订单管理',
@@ -666,6 +667,7 @@ const messages = {
         systemSettings: '系统设置',
       },
       navItems: {
+        boostGames: '代练游戏', // BOOST-EXT
         dashboard: '仪表盘',
         productCategories: '商品分类',
         productList: '商品列表',
@@ -5098,6 +5100,7 @@ const messages = {
         settings: '系統設定',
       },
       navGroups: {
+        boostManagement: '代練管理', // BOOST-EXT
         dashboard: '儀表板',
         productManagement: '商品管理',
         orderManagement: '訂單管理',
@@ -5113,6 +5116,7 @@ const messages = {
         systemSettings: '系統設定',
       },
       navItems: {
+        boostGames: '代練遊戲', // BOOST-EXT
         dashboard: '儀表板',
         productCategories: '商品分類',
         productList: '商品列表',
@@ -9545,6 +9549,7 @@ const messages = {
         settings: 'Settings',
       },
       navGroups: {
+        boostManagement: 'Boosting', // BOOST-EXT
         dashboard: 'Dashboard',
         productManagement: 'Product Management',
         orderManagement: 'Order Management',
@@ -9560,6 +9565,7 @@ const messages = {
         systemSettings: 'System Settings',
       },
       navItems: {
+        boostGames: 'Boost Games', // BOOST-EXT
         dashboard: 'Dashboard',
         productCategories: 'Product Categories',
         productList: 'Product List',

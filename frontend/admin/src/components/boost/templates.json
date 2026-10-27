@@ -1,0 +1,560 @@
+[
+  {
+    "key": "starfall_main",
+    "label": "主线关卡（通关 / 扫荡分价、可选次数）",
+    "definition": {
+      "schema_version": 1,
+      "code": "main_stage",
+      "name": "主线关卡",
+      "description": "选择要处理的主线关卡。通关：首次打过关卡并拿三星；扫荡：已三星的关卡重复刷材料。",
+      "capability": "main_stage",
+      "timeout_minutes": 240,
+      "max_active_per_user": 3,
+      "refund_policy": "prorate",
+      "member_discount": true,
+      "catalogs": {
+        "main": {
+          "label": "关卡",
+          "groups": [
+            {
+              "code": "ch1",
+              "name": "第一章 · 晨曦平原",
+              "items": [
+                {
+                  "code": "1-1",
+                  "name": "1-1 迷雾入口",
+                  "cost": {
+                    "clear": 5,
+                    "sweep": 2
+                  },
+                  "tags": [
+                    "经验"
+                  ]
+                },
+                {
+                  "code": "1-2",
+                  "name": "1-2 旧哨塔",
+                  "cost": {
+                    "clear": 5,
+                    "sweep": 2
+                  },
+                  "tags": [
+                    "金币"
+                  ]
+                },
+                {
+                  "code": "1-3",
+                  "name": "1-3 断桥",
+                  "cost": {
+                    "clear": 6,
+                    "sweep": 2
+                  },
+                  "tags": [
+                    "突破材料"
+                  ]
+                },
+                {
+                  "code": "1-4",
+                  "name": "1-4 守望者（BOSS）",
+                  "cost": {
+                    "clear": 10,
+                    "sweep": 4
+                  },
+                  "tags": [
+                    "BOSS",
+                    "武器"
+                  ]
+                }
+              ]
+            },
+            {
+              "code": "ch2",
+              "name": "第二章 · 雾隐山谷",
+              "items": [
+                {
+                  "code": "2-1",
+                  "name": "2-1 林间小径",
+                  "cost": {
+                    "clear": 7,
+                    "sweep": 3
+                  },
+                  "tags": [
+                    "经验"
+                  ]
+                },
+                {
+                  "code": "2-2",
+                  "name": "2-2 采药人营地",
+                  "cost": {
+                    "clear": 7,
+                    "sweep": 3
+                  },
+                  "tags": [
+                    "天赋材料"
+                  ]
+                },
+                {
+                  "code": "2-3",
+                  "name": "2-3 瀑布洞窟",
+                  "cost": {
+                    "clear": 8,
+                    "sweep": 3
+                  },
+                  "tags": [
+                    "突破材料"
+                  ]
+                },
+                {
+                  "code": "2-4",
+                  "name": "2-4 雾影狼王（BOSS）",
+                  "cost": {
+                    "clear": 14,
+                    "sweep": 5
+                  },
+                  "tags": [
+                    "BOSS",
+                    "圣遗物"
+                  ]
+                }
+              ]
+            },
+            {
+              "code": "ch3",
+              "name": "第三章 · 沉星海岸",
+              "items": [
+                {
+                  "code": "3-1",
+                  "name": "3-1 潮汐礁石",
+                  "cost": {
+                    "clear": 9,
+                    "sweep": 4
+                  }
+                },
+                {
+                  "code": "3-2",
+                  "name": "3-2 沉船残骸",
+                  "cost": {
+                    "clear": 9,
+                    "sweep": 4
+                  },
+                  "tags": [
+                    "金币"
+                  ]
+                },
+                {
+                  "code": "3-3",
+                  "name": "3-3 灯塔顶层",
+                  "cost": {
+                    "clear": 12
+                  },
+                  "tags": [
+                    "剧情关",
+                    "不可扫荡"
+                  ]
+                },
+                {
+                  "code": "3-4",
+                  "name": "3-4 深海巨像（BOSS）",
+                  "cost": {
+                    "clear": 20
+                  },
+                  "tags": [
+                    "BOSS",
+                    "限时"
+                  ],
+                  "disabled": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "fields": [
+        {
+          "key": "mode",
+          "type": "radio",
+          "label": "模式",
+          "required": true,
+          "default": "sweep",
+          "options": [
+            {
+              "value": "clear",
+              "label": "通关（拿三星）"
+            },
+            {
+              "value": "sweep",
+              "label": "扫荡"
+            }
+          ]
+        },
+        {
+          "key": "stages",
+          "type": "stage_picker",
+          "label": "选择关卡",
+          "catalog": "main",
+          "multiple": true,
+          "max_select": 12,
+          "required": true,
+          "cost_by": "mode",
+          "count": {
+            "label": "扫荡次数",
+            "min": 1,
+            "max": 99,
+            "default": 10,
+            "visible_when": {
+              "mode": "sweep"
+            }
+          }
+        },
+        {
+          "key": "use_stamina_potion",
+          "type": "switch",
+          "label": "体力不足时使用体力药",
+          "help": "只消耗背包里已有的体力药，不会花钱购买",
+          "default": false,
+          "visible_when": {
+            "mode": "sweep"
+          }
+        },
+        {
+          "key": "auto_team",
+          "type": "switch",
+          "label": "自动编队",
+          "help": "关闭则使用你在游戏里保存的第一队",
+          "default": true,
+          "points": 0
+        },
+        {
+          "key": "remark",
+          "type": "text",
+          "label": "备注",
+          "maxlength": 60,
+          "placeholder": "例如：第 3 关请带治疗"
+        }
+      ],
+      "limits": {
+        "max_units": 500
+      }
+    }
+  },
+  {
+    "key": "starfall_daily",
+    "label": "每日委托（基础价 + 附加项）",
+    "definition": {
+      "schema_version": 1,
+      "code": "daily",
+      "name": "每日委托",
+      "description": "完成当日 4 个委托并领取奖励，可附加领取邮件、派遣。",
+      "capability": "daily",
+      "timeout_minutes": 30,
+      "max_active_per_user": 3,
+      "refund_policy": "full_on_system_fail",
+      "member_discount": true,
+      "base_points": 20,
+      "fields": [
+        {
+          "key": "extras",
+          "type": "checkbox",
+          "label": "附加项目",
+          "options": [
+            {
+              "value": "mail",
+              "label": "领取邮件",
+              "points": 0
+            },
+            {
+              "value": "dispatch",
+              "label": "探索派遣（收取并重新派出）",
+              "points": 5
+            },
+            {
+              "value": "shop",
+              "label": "兑换商店每日免费物品",
+              "points": 3
+            }
+          ],
+          "default": [
+            "mail"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "key": "starfall_abyss",
+    "label": "深渊（多选楼层 + 下拉加价）",
+    "definition": {
+      "schema_version": 1,
+      "code": "abyss",
+      "name": "深境螺旋",
+      "description": "挑战深境螺旋指定楼层，按层计费。未能三星的层按完成层数扣点。",
+      "capability": "abyss",
+      "timeout_minutes": 180,
+      "max_active_per_user": 1,
+      "refund_policy": "prorate",
+      "member_discount": true,
+      "catalogs": {
+        "floors": {
+          "label": "楼层",
+          "groups": [
+            {
+              "code": "low",
+              "name": "低层（1–8）",
+              "items": [
+                {
+                  "code": "f5",
+                  "name": "第 5 层",
+                  "cost": 6
+                },
+                {
+                  "code": "f6",
+                  "name": "第 6 层",
+                  "cost": 6
+                },
+                {
+                  "code": "f7",
+                  "name": "第 7 层",
+                  "cost": 8
+                },
+                {
+                  "code": "f8",
+                  "name": "第 8 层",
+                  "cost": 8
+                }
+              ]
+            },
+            {
+              "code": "high",
+              "name": "高层（9–12）",
+              "items": [
+                {
+                  "code": "f9",
+                  "name": "第 9 层",
+                  "cost": 15,
+                  "tags": [
+                    "本期"
+                  ]
+                },
+                {
+                  "code": "f10",
+                  "name": "第 10 层",
+                  "cost": 18,
+                  "tags": [
+                    "本期"
+                  ]
+                },
+                {
+                  "code": "f11",
+                  "name": "第 11 层",
+                  "cost": 25,
+                  "tags": [
+                    "本期"
+                  ]
+                },
+                {
+                  "code": "f12",
+                  "name": "第 12 层",
+                  "cost": 35,
+                  "tags": [
+                    "本期",
+                    "难"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "fields": [
+        {
+          "key": "floors",
+          "type": "stage_picker",
+          "label": "挑战楼层",
+          "catalog": "floors",
+          "multiple": true,
+          "required": true
+        },
+        {
+          "key": "target",
+          "type": "select",
+          "label": "目标",
+          "default": "three_star",
+          "options": [
+            {
+              "value": "pass",
+              "label": "通过即可"
+            },
+            {
+              "value": "three_star",
+              "label": "尽量三星",
+              "points": 10
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "key": "starfall_idle",
+    "label": "挂机采集（按分钟计费）",
+    "definition": {
+      "schema_version": 1,
+      "code": "idle_farm",
+      "name": "挂机采集",
+      "description": "在指定区域循环采集材料，按运行分钟扣点。",
+      "capability": "idle",
+      "timeout_minutes": 540,
+      "max_active_per_user": 2,
+      "refund_policy": "prorate",
+      "member_discount": false,
+      "fields": [
+        {
+          "key": "area",
+          "type": "select",
+          "label": "采集区域",
+          "required": true,
+          "options": [
+            {
+              "value": "plain",
+              "label": "晨曦平原"
+            },
+            {
+              "value": "valley",
+              "label": "雾隐山谷"
+            },
+            {
+              "value": "coast",
+              "label": "沉星海岸"
+            }
+          ]
+        },
+        {
+          "key": "minutes",
+          "type": "number",
+          "label": "运行时长",
+          "unit": "分钟",
+          "min": 30,
+          "max": 480,
+          "default": 60,
+          "points_per": 1
+        }
+      ]
+    }
+  },
+  {
+    "key": "ironcrest_farm",
+    "label": "挂机刷野（开关附加项）",
+    "definition": {
+      "schema_version": 1,
+      "code": "farm",
+      "name": "资源收取 + 联盟帮助",
+      "description": "收取全部资源田、点满联盟帮助、领取在线奖励。",
+      "capability": "farm",
+      "timeout_minutes": 20,
+      "refund_policy": "full_on_system_fail",
+      "base_points": 10,
+      "fields": [
+        {
+          "key": "heal",
+          "type": "switch",
+          "label": "顺便治疗伤兵",
+          "default": false,
+          "points": 2
+        }
+      ]
+    }
+  },
+  {
+    "key": "ironcrest_march",
+    "label": "出征（单选目标 + 次数）",
+    "definition": {
+      "schema_version": 1,
+      "code": "march",
+      "name": "自动打野",
+      "description": "按指定野怪等级循环出征，按完成次数扣点。",
+      "capability": "march",
+      "timeout_minutes": 240,
+      "max_active_per_user": 2,
+      "refund_policy": "prorate",
+      "member_discount": false,
+      "catalogs": {
+        "monsters": {
+          "label": "野怪",
+          "groups": [
+            {
+              "code": "normal",
+              "name": "普通野怪",
+              "items": [
+                {
+                  "code": "lv10",
+                  "name": "10 级野怪",
+                  "cost": 2
+                },
+                {
+                  "code": "lv15",
+                  "name": "15 级野怪",
+                  "cost": 3
+                },
+                {
+                  "code": "lv20",
+                  "name": "20 级野怪",
+                  "cost": 4
+                }
+              ]
+            },
+            {
+              "code": "elite",
+              "name": "精英",
+              "items": [
+                {
+                  "code": "elite25",
+                  "name": "25 级精英",
+                  "cost": 8,
+                  "tags": [
+                    "需要集结"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "fields": [
+        {
+          "key": "target",
+          "type": "stage_picker",
+          "label": "目标野怪",
+          "catalog": "monsters",
+          "multiple": false,
+          "required": true,
+          "count": {
+            "label": "出征次数",
+            "min": 1,
+            "max": 50,
+            "default": 10
+          }
+        },
+        {
+          "key": "troop",
+          "type": "radio",
+          "label": "出征部队",
+          "default": "cavalry",
+          "options": [
+            {
+              "value": "cavalry",
+              "label": "骑兵"
+            },
+            {
+              "value": "infantry",
+              "label": "步兵"
+            },
+            {
+              "value": "archer",
+              "label": "弓兵"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]
