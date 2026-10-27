@@ -77,6 +77,9 @@ func TestMigrateIsRepeatableAndOnlyCreatesBoostTables(t *testing.T) {
 			t.Errorf("missing index %s", index.name)
 		}
 	}
+	if !db.Migrator().HasColumn(&boostdomain.Game{}, "icon_url") {
+		t.Error("boost_games.icon_url missing")
+	}
 }
 
 func TestMigrateRejectsDuplicateCodes(t *testing.T) {

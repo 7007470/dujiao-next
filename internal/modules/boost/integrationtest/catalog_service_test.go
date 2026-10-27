@@ -63,6 +63,20 @@ func TestGameCodeIsUniqueAndImmutable(t *testing.T) {
 	_, err = svc.SaveGame(boostapp.GameInput{ID: game.ID, Code: "renamed", Name: "星落幻境"})
 	wantErr(t, err, boostcontract.ErrCodeImmutable)
 
+	withIcon, err := svc.SaveGame(boostapp.GameInput{ID: game.ID, Code: "starfall", Name: "星落幻境", IconURL: " /uploads/category/2026/10/icon.png "})
+	if err != nil || withIcon.IconURL != "/uploads/category/2026/10/icon.png" {
+		t.Fatalf("icon = %+v, %v", withIcon, err)
+	}
+	for _, icon := range []string{"https://cdn.example.com/a.png", ""} {
+		if g, err := svc.SaveGame(boostapp.GameInput{ID: game.ID, Code: "starfall", Name: "星落幻境", IconURL: icon}); err != nil || g.IconURL != icon {
+			t.Fatalf("icon %q = %+v, %v", icon, g, err)
+		}
+	}
+	for _, icon := range []string{"javascript:alert(1)", "data:image/png;base64,AAAA", "/etc/passwd", "/uploads/../config.yml", `https://x.com/a.png"onerror="x`, "//evil.com/a.png"} {
+		_, err := svc.SaveGame(boostapp.GameInput{ID: game.ID, Code: "starfall", Name: "星落幻境", IconURL: icon})
+		wantErr(t, err, boostcontract.ErrInvalid)
+	}
+
 	for _, bad := range []boostapp.GameInput{{Code: "Bad-Code", Name: "x"}, {Code: "ok_code", Name: ""}, {Code: "x", Name: "x"}} {
 		_, err := svc.SaveGame(bad)
 		wantErr(t, err, boostcontract.ErrInvalid)

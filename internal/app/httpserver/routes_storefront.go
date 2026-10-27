@@ -8,6 +8,7 @@ import (
 	affiliatetransport "github.com/dujiao-next/internal/modules/affiliate/transport/http"
 	apicredentialtransport "github.com/dujiao-next/internal/modules/apicredential/transport/http"
 	auditlogtransport "github.com/dujiao-next/internal/modules/auditlog/transport/http"
+	boosttransport "github.com/dujiao-next/internal/modules/boost/transport/http" // BOOST-EXT
 	captchatransport "github.com/dujiao-next/internal/modules/captcha/transport/http"
 	carttransport "github.com/dujiao-next/internal/modules/cart/transport/http"
 	categoryhttp "github.com/dujiao-next/internal/modules/catalog/category/transport/http"
@@ -69,6 +70,7 @@ func registerStorefrontRoutes(
 	storefront := apiV1.Group("")
 	storefront.Use(middleware.ResellerTenantMiddleware(c.ResellerDomainResolver))
 	affiliateHandler := affiliatebootstrap.NewStorefrontHandler(c)
+	boostStorefrontHandler := boosttransport.NewStorefrontHandler(c.BoostStorefrontService) // BOOST-EXT
 
 	// 公开接口
 	public := storefront.Group("/public")
@@ -80,6 +82,7 @@ func registerStorefrontRoutes(
 		captchatransport.RegisterPublicRoutes(public, captchatransport.NewPublicHandler(c.CaptchaService))
 		affiliatetransport.RegisterPublicRoutes(public, affiliateHandler)
 		memberleveltransport.RegisterPublicRoutes(public, publicMemberLevelHandler)
+		boosttransport.RegisterPublicRoutes(public, boostStorefrontHandler) // BOOST-EXT
 	}
 
 	// 游客接口
@@ -141,6 +144,7 @@ func registerStorefrontRoutes(
 		giftCardRedeem := user.Group("", middleware.RateLimitMiddleware(redisClient, giftCardRedeemRule, middleware.KeyByUserIDAndIP))
 		giftcardtransport.RegisterUserRoutes(giftCardRedeem, userGiftCardHandler)
 		affiliatetransport.RegisterUserRoutes(user, affiliateHandler)
+		boosttransport.RegisterUserRoutes(user, boostStorefrontHandler) // BOOST-EXT
 
 		resellerConsole := user.Group("/reseller")
 		resellerConsole.Use(middleware.RequireMainTenantForResellerConsole())

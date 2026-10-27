@@ -10,6 +10,7 @@ type Game struct {
 	Name      string    `gorm:"type:varchar(64);not null" json:"name"`
 	ShortName string    `gorm:"type:varchar(16)" json:"short_name"`
 	Color     string    `gorm:"type:varchar(16)" json:"color"`
+	IconURL   string    `gorm:"column:icon_url;type:varchar(500)" json:"icon_url"` // 游戏图标（上传后的 /uploads/... 路径或 https 地址）；为空时用简称 + 颜色
 	Sort      int       `gorm:"not null;index" json:"sort"`
 	Status    string    `gorm:"type:varchar(16);not null;default:'draft';index" json:"status"`
 	Version   int       `gorm:"not null;default:1" json:"version"`

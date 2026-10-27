@@ -164,7 +164,8 @@ type Container struct {
 	PaymentService                *paymentapp.PaymentService
 	CardSecretService             *cardsecretapp.Service
 	GiftCardService               *giftcardapp.Service
-	BoostCatalogService           *boostapp.CatalogService // BOOST-EXT
+	BoostCatalogService           *boostapp.CatalogService    // BOOST-EXT
+	BoostStorefrontService        *boostapp.StorefrontService // BOOST-EXT
 	UserLoginLogService           *auditlogapp.UserLoginService
 	AuthzAuditService             *auditlogapp.AuthzService
 	AdminLoginLogService          *auditlogapp.AdminLoginService

@@ -102,6 +102,7 @@ type gameRequest struct {
 	Name      string `json:"name"`
 	ShortName string `json:"short_name"`
 	Color     string `json:"color"`
+	IconURL   string `json:"icon_url"`
 	Sort      int    `json:"sort"`
 }
 
@@ -155,7 +156,7 @@ func (h *AdminHandler) saveGame(c *gin.Context, id uint) {
 	}
 	game, err := h.catalog.SaveGame(boostapp.GameInput{
 		ID: id, Version: req.Version, Code: req.Code, Name: req.Name,
-		ShortName: req.ShortName, Color: req.Color, Sort: req.Sort,
+		ShortName: req.ShortName, Color: req.Color, IconURL: req.IconURL, Sort: req.Sort,
 	})
 	if err != nil {
 		respond(c, err)

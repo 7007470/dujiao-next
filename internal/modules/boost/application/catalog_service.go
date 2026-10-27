@@ -61,6 +61,7 @@ type GameInput struct {
 	Name      string
 	ShortName string
 	Color     string
+	IconURL   string
 	Sort      int
 }
 
@@ -91,8 +92,12 @@ func (s *CatalogService) SaveGame(input GameInput) (*boostdomain.Game, error) {
 	if name == "" || utf8.RuneCountInString(name) > 30 {
 		return nil, invalid(boostcontract.ErrInvalid, "游戏名称必填，最多 30 个字")
 	}
+	icon, err := normalizeIconURL(input.IconURL)
+	if err != nil {
+		return nil, err
+	}
 	var saved *boostdomain.Game
-	err := s.repo.WithinTransaction(func(repo boostcontract.CatalogRepository) error {
+	err = s.repo.WithinTransaction(func(repo boostcontract.CatalogRepository) error {
 		var game *boostdomain.Game
 		if input.ID != 0 {
 			existing, err := repo.GetGame(input.ID)
@@ -129,6 +134,7 @@ func (s *CatalogService) SaveGame(input GameInput) (*boostdomain.Game, error) {
 			game.Color = defaultGameColor
 		}
 		game.Sort = input.Sort
+		game.IconURL = icon
 		if input.ID != 0 {
 			if err := repo.SaveGame(game); err != nil {
 				return err
@@ -601,6 +607,26 @@ func AsValidationError(err error) (*ValidationError, bool) {
 	var ve *ValidationError
 	ok := errors.As(err, &ve)
 	return ve, ok
+}
+
+// normalizeIconURL 只接受站内上传路径（/uploads/...）或 http(s) 地址，拒绝 javascript:、data: 等，
+// 因为图标会直接作为 <img src> 显示在用户端。
+func normalizeIconURL(raw string) (string, error) {
+	icon := strings.TrimSpace(raw)
+	switch {
+	case icon == "":
+		return "", nil
+	case len(icon) > 500:
+		return "", invalid(boostcontract.ErrInvalid, "图标地址最多 500 个字符")
+	case strings.HasPrefix(icon, "/uploads/") && !strings.Contains(icon, ".."):
+		return icon, nil
+	case strings.HasPrefix(icon, "https://") || strings.HasPrefix(icon, "http://"):
+		if strings.ContainsAny(icon, " \\\x00\n\r\t\"'<>") {
+			return "", invalid(boostcontract.ErrInvalid, "图标地址包含非法字符")
+		}
+		return icon, nil
+	}
+	return "", invalid(boostcontract.ErrInvalid, "图标必须是上传的图片或 http(s) 地址")
 }
 
 func firstNonEmpty(values ...string) string {

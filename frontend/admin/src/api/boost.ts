@@ -12,6 +12,7 @@ export interface BoostGame {
   name: string
   short_name: string
   color: string
+  icon_url: string
   sort: number
   status: BoostGameStatus
   version: number

@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input'
 import { Dialog, DialogHeader, DialogScrollContent, DialogTitle } from '@/components/ui/dialog'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import TableSkeleton from '@/components/TableSkeleton.vue'
+import MediaPicker from '@/components/admin/MediaPicker.vue'
+import { getImageUrl } from '@/utils/image'
 import { notifySuccess } from '@/utils/notify'
 import { confirmAction } from '@/utils/confirm'
 
@@ -38,12 +40,12 @@ const load = async () => {
 const gameDialog = ref(false)
 const gameSaving = ref(false)
 const gameError = ref('')
-const gameForm = reactive({ id: 0, version: 0, code: '', name: '', short_name: '', color: '#2f6f6a', sort: 0 })
+const gameForm = reactive({ id: 0, version: 0, code: '', name: '', short_name: '', color: '#2f6f6a', icon_url: '', sort: 0 })
 
 const openGame = (g?: BoostGame) => {
   Object.assign(gameForm, g
-    ? { id: g.id, version: g.version, code: g.code, name: g.name, short_name: g.short_name, color: g.color, sort: g.sort }
-    : { id: 0, version: 0, code: '', name: '', short_name: '', color: '#2f6f6a', sort: games.value.length + 1 })
+    ? { id: g.id, version: g.version, code: g.code, name: g.name, short_name: g.short_name, color: g.color, icon_url: g.icon_url || '', sort: g.sort }
+    : { id: 0, version: 0, code: '', name: '', short_name: '', color: '#2f6f6a', icon_url: '', sort: games.value.length + 1 })
   gameError.value = ''
   gameDialog.value = true
 }
@@ -52,7 +54,7 @@ const saveGame = async () => {
   gameSaving.value = true
   gameError.value = ''
   try {
-    const payload = { code: gameForm.code.trim(), name: gameForm.name.trim(), short_name: gameForm.short_name.trim(), color: gameForm.color, sort: Number(gameForm.sort) || 0 }
+    const payload = { code: gameForm.code.trim(), name: gameForm.name.trim(), short_name: gameForm.short_name.trim(), color: gameForm.color, icon_url: gameForm.icon_url, sort: Number(gameForm.sort) || 0 }
     if (gameForm.id) await boostAdminAPI.updateGame(gameForm.id, { ...payload, version: gameForm.version })
     else await boostAdminAPI.createGame(payload)
     gameDialog.value = false
@@ -165,7 +167,8 @@ onMounted(load)
           <TableRow v-for="g in games" :key="g.id">
             <TableCell>
               <div class="flex items-center gap-2">
-                <span class="inline-flex h-8 w-8 items-center justify-center rounded-md text-xs font-semibold text-white" :style="{ background: g.color }">{{ g.short_name }}</span>
+                <img v-if="g.icon_url" :src="getImageUrl(g.icon_url)" :alt="g.name" class="h-8 w-8 rounded-md object-cover" />
+                <span v-else class="inline-flex h-8 w-8 items-center justify-center rounded-md text-xs font-semibold text-white" :style="{ background: g.color }">{{ g.short_name }}</span>
                 <span class="font-medium">{{ g.name }}</span>
               </div>
             </TableCell>
@@ -201,9 +204,13 @@ onMounted(load)
             <label class="text-xs font-medium text-muted-foreground" for="bg-name">名称</label>
             <Input id="bg-name" v-model="gameForm.name" maxlength="30" />
           </div>
+          <div class="space-y-1">
+            <label class="text-xs font-medium text-muted-foreground">图标（建议正方形，至少 128×128）</label>
+            <MediaPicker v-model="gameForm.icon_url" scene="category" />
+          </div>
           <div class="grid grid-cols-3 gap-3">
             <div class="space-y-1">
-              <label class="text-xs font-medium text-muted-foreground" for="bg-short">简称</label>
+              <label class="text-xs font-medium text-muted-foreground" for="bg-short">简称（无图标时显示）</label>
               <Input id="bg-short" v-model="gameForm.short_name" maxlength="4" placeholder="默认取名称前两字" />
             </div>
             <div class="space-y-1">

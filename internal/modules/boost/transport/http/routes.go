@@ -2,6 +2,24 @@ package boosthttp
 
 import "github.com/gin-gonic/gin"
 
+// RegisterPublicRoutes 注册用户端公开路由（挂在 /api/v1/public 下，不需要登录）。
+func RegisterPublicRoutes(public gin.IRoutes, handler *StorefrontHandler) {
+	if public == nil || handler == nil {
+		panic("boost public routes: required dependency is nil")
+	}
+	public.GET("/boost/games", handler.ListGames)
+	public.GET("/boost/games/:code", handler.GetGame)
+	public.POST("/boost/quote", handler.PublicQuote)
+}
+
+// RegisterUserRoutes 注册用户端登录后路由（挂在 /api/v1 下，已经过用户 JWT）。
+func RegisterUserRoutes(user gin.IRoutes, handler *StorefrontHandler) {
+	if user == nil || handler == nil {
+		panic("boost user routes: required dependency is nil")
+	}
+	user.POST("/boost/quote", handler.UserQuote)
+}
+
 // RegisterAdminRoutes 注册后台代练目录管理路由（挂在 /api/v1/admin 下，已经过 JWT + RBAC）。
 // 路径必须是字面量：internal/app/httpserver/rbac_coverage_test.go 会静态扫描并要求被角色种子覆盖。
 func RegisterAdminRoutes(authorized gin.IRoutes, handler *AdminHandler) {
