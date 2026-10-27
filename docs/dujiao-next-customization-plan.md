@@ -10,7 +10,7 @@
 | 范围 | 只做自动代练；账号交易暂缓（见 `docs/decisions/001-scope-boost-only.md`） |
 | 业务规则 | 已在 `prototype/` 用 JS 实现并验证：47 个自动化测试全部通过，用户已确认"基本符合要求" |
 | 功能 JSON 规范 | `docs/boost-feature-schema.md`，实现 `prototype/src/catalog.js` |
-| Go 实现 | **未开始** |
+| Go 实现 | S0–S3 完成，另补了游戏图标和用户端浏览 / 报价页面；S4 积分起未开始 |
 | 仓库 | `https://github.com/7007470/dujiao-next`（官方仓库的 fork，带完整历史）。`main` 是原版；基线标签 `upstream-base` = `d2e44618`（2026-09-16），和之前读的快照逐字节一致；开发分支 `boost/dev` |
 | S0 进度（2026-10-26） | 已完成：版本固定、分支和标签已推送、文档导入、§6 改动点核对、原版 Go 基线**全部通过**（187 个包 ok，0 失败）。还差：启动测试实例、登录、模拟支付（可以和后续阶段并行） |
 | S1 进度（2026-10-26） | **完成**：15 张 `boost_` / `worker_` 表、迁移入口、约束测试（见 `docs/decisions/002-s1-schema.md`）。gofmt / vet / build 通过；全量 `go test` 189 个包 ok（基线 187 + 新增 2），0 失败；变异检查确认约束测试能抓到索引失效 |
