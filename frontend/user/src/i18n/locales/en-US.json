@@ -49,7 +49,8 @@
     "products": "Products",
     "blog": "Blog",
     "notice": "Notice",
-    "about": "About"
+    "about": "About",
+    "boost": "Boosting"
   },
   "vault": {
     "hero": {
@@ -285,7 +286,8 @@
     "home": "Home",
     "products": "Products",
     "cart": "Cart",
-    "me": "Me"
+    "me": "Me",
+    "boost": "Boost"
   },
   "personalCenter": {
     "title": "Personal Center",
@@ -1724,5 +1726,25 @@
     "authInvalid": "Credentials mismatch, please try again",
     "authSubmit": "Save and search",
     "authClear": "Clear saved info"
+  },
+  "boost": {
+    "title": "Game Boosting",
+    "subtitle": "Pick a game and a service. You pay for what gets done; unfinished work is refunded in points.",
+    "empty": "No games are open for boosting yet",
+    "featureCount": "{count} services",
+    "servers": "Servers",
+    "backToGames": "← All games",
+    "noFeatures": "No services available for this game yet",
+    "pickFeature": "Choose a service",
+    "total": "Total",
+    "points": "points",
+    "memberRate": "Member discount ({rate}%) applied",
+    "loginForDiscount": "Sign in to get your member discount",
+    "units": "{count} units in total. Billed by completed units; the rest is refunded",
+    "submit": "Next: link account and order",
+    "comingSoon": "Account linking and ordering are coming soon (points first)",
+    "fixErrors": "Please fix the highlighted options first",
+    "notFound": "This game does not exist or is offline",
+    "quoteFailed": "Could not get a price. Please try again"
   }
 }

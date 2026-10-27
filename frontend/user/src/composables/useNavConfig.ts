@@ -1,7 +1,7 @@
 import { computed, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-    Home, LayoutGrid, Newspaper, Bell, Info,
+    Home, LayoutGrid, Newspaper, Bell, Info, Gamepad2,
     Link2, FileText, Globe, Star, Heart, MessageCircle, Gift, Zap, Shield,
     BookOpen, Code, Phone, MapPin, Music, Camera,
 } from 'lucide-vue-next'
@@ -46,6 +46,8 @@ interface NavConfigRaw {
 }
 
 const builtinNavDefs: Record<string, { path: string; label: string; icon: Component }> = {
+    // BOOST-EXT: 代练（排在最前；后台导航设置里关掉 builtin.boost 即可隐藏）
+    boost: { path: '/boost', label: 'nav.boost', icon: Gamepad2 },
     blog: { path: '/blog', label: 'nav.blog', icon: Newspaper },
     notice: { path: '/notice', label: 'nav.notice', icon: Bell },
     about: { path: '/about', label: 'nav.about', icon: Info },

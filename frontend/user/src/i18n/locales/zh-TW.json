@@ -49,7 +49,8 @@
     "products": "商品中心",
     "blog": "部落格",
     "notice": "公告",
-    "about": "關於"
+    "about": "關於",
+    "boost": "代練"
   },
   "vault": {
     "hero": {
@@ -285,7 +286,8 @@
     "home": "首頁",
     "products": "商品",
     "cart": "購物車",
-    "me": "我的"
+    "me": "我的",
+    "boost": "代練"
   },
   "personalCenter": {
     "title": "個人中心",
@@ -1724,5 +1726,25 @@
     "authInvalid": "資訊不匹配，請重新輸入",
     "authSubmit": "保存並查詢",
     "authClear": "清除已保存資訊"
+  },
+  "boost": {
+    "title": "遊戲代練",
+    "subtitle": "選擇遊戲和代練項目，按完成量結算，未完成部分自動退回積分。",
+    "empty": "暫時還沒有開放代練的遊戲",
+    "featureCount": "{count} 個代練項目",
+    "servers": "區服",
+    "backToGames": "← 全部遊戲",
+    "noFeatures": "這個遊戲暫時沒有可下單的代練項目",
+    "pickFeature": "選擇代練項目",
+    "total": "合計",
+    "points": "積分",
+    "memberRate": "會員 {rate} 折已計入",
+    "loginForDiscount": "登入後按會員等級享受折扣",
+    "units": "共 {count} 個執行單位，按實際完成量結算，未完成部分退回",
+    "submit": "下一步：綁定帳號並下單",
+    "comingSoon": "帳號綁定和下單即將開放（需要先接入積分）",
+    "fixErrors": "請先修正上面標紅的選項",
+    "notFound": "遊戲不存在或已下線",
+    "quoteFailed": "報價失敗，請稍後重試"
   }
 }

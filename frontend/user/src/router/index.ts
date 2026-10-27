@@ -268,6 +268,17 @@ const router = createRouter({
             name: 'blog-detail',
             component: templateView('BlogDetail', () => import('../views/BlogDetail.vue')),
         },
+        // BOOST-EXT: 代练
+        {
+            path: '/boost',
+            name: 'boost',
+            component: () => import('../views/BoostGames.vue'),
+        },
+        {
+            path: '/boost/:code',
+            name: 'boost-game',
+            component: () => import('../views/BoostGameDetail.vue'),
+        },
         {
             path: '/notice',
             name: 'notice',

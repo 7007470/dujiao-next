@@ -12,6 +12,7 @@
         <Home v-if="item.icon === 'home'" class="w-5 h-5" />
         <!-- Products -->
         <LayoutGrid v-else-if="item.icon === 'products'" class="w-5 h-5" />
+        <Gamepad2 v-else-if="item.icon === 'boost'" class="w-5 h-5" />
         <!-- Cart -->
         <div v-else-if="item.icon === 'cart'" class="relative">
           <ShoppingCart class="w-5 h-5" />
@@ -32,7 +33,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Home, LayoutGrid, ShoppingCart, User } from 'lucide-vue-next'
+import { Home, LayoutGrid, ShoppingCart, User, Gamepad2 } from 'lucide-vue-next'
 import { useCartStore } from '../stores/cart'
 import { useUserAuthStore } from '../stores/userAuth'
 import { useAppStore } from '../stores/app'
@@ -50,6 +51,7 @@ const navItems = computed(() => {
   const items = [
     { path: '/', icon: 'home', label: 'bottomNav.home' },
     ...(!isListMode.value ? [{ path: '/products', icon: 'products', label: 'bottomNav.products' }] : []),
+    { path: '/boost', icon: 'boost', label: 'bottomNav.boost' }, // BOOST-EXT
     { path: '/cart', icon: 'cart', label: 'bottomNav.cart' },
     { path: userAuthStore.isAuthenticated ? '/me' : '/auth/login', icon: 'me', label: 'bottomNav.me' },
   ]
