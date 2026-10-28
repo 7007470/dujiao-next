@@ -1,5 +1,6 @@
 // BOOST-EXT: 用户端代练接口。价格只以服务端报价为准，前端不做任何计算。
-import { api } from './client'
+// 公开接口用 api（不带登录凭证），登录后接口必须用 userApi（带 Authorization），否则服务端返回 401
+import { api, userApi } from './client'
 
 export interface BoostServer {
   id: number
@@ -90,7 +91,7 @@ export const boostAPI = {
     api.get(`/public/boost/games/${encodeURIComponent(code)}`).then(unwrap<{ game: BoostGame; features: BoostFeature[] }>),
   // 登录用户走 /boost/quote（按会员等级打折），未登录走公开接口（原价）
   quote: (featureId: number, params: Record<string, unknown>, signedIn: boolean) =>
-    api.post(signedIn ? '/boost/quote' : '/public/boost/quote', { feature_id: featureId, params }).then(unwrap<BoostPlan>),
+    (signedIn ? userApi.post('/boost/quote', { feature_id: featureId, params }) : api.post('/public/boost/quote', { feature_id: featureId, params })).then(unwrap<BoostPlan>),
 }
 
 // ---- 积分（S4）----
@@ -137,9 +138,9 @@ export interface BoostPagination {
 
 export const boostPointsAPI = {
   packs: () => api.get('/public/boost/point-packs').then(unwrap<BoostPointPack[]>),
-  summary: () => api.get('/boost/points').then(unwrap<BoostPointsSummary>),
+  summary: () => userApi.get('/boost/points').then(unwrap<BoostPointsSummary>),
   ledger: (page = 1, pageSize = 20) =>
-    api.get('/boost/points/ledger', { params: { page, page_size: pageSize } }).then((res: { data: any }) => ({
+    userApi.get('/boost/points/ledger', { params: { page, page_size: pageSize } }).then((res: { data: any }) => ({
       items: (res.data?.data as BoostLedgerRow[]) || [],
       pagination: (res.data?.pagination as BoostPagination) || { page: 1, page_size: pageSize, total: 0, total_page: 1 },
     })),
