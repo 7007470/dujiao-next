@@ -840,6 +840,8 @@ watch(
               <SelectContent>
                 <SelectItem value="manual">{{ t('admin.products.fulfillmentType.manual') }}</SelectItem>
                 <SelectItem value="auto">{{ t('admin.products.fulfillmentType.auto') }}</SelectItem>
+                <!-- BOOST-EXT: 代练积分包，支付后自动发放积分；在「代练管理 → 积分」里配置积分数量 -->
+                <SelectItem value="boost_points">{{ t('admin.products.fulfillmentType.boost_points') }}</SelectItem>
               </SelectContent>
             </Select>
             <p v-if="editingIsMapped" class="mt-1 text-xs text-indigo-600">{{ t('admin.products.mappedFulfillmentLocked') }}</p>

@@ -275,6 +275,12 @@ const router = createRouter({
             component: () => import('../views/BoostGames.vue'),
         },
         {
+            path: '/boost/points',
+            name: 'boost-points',
+            component: () => import('../views/BoostPoints.vue'),
+            meta: { requiresUserAuth: true }
+        },
+        {
             path: '/boost/:code',
             name: 'boost-game',
             component: () => import('../views/BoostGameDetail.vue'),

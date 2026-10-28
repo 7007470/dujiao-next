@@ -414,6 +414,11 @@ export function useProductDetail(options: { onLoaded?: () => void } = {}) {
   const addToCart = () => {
     if (!product.value) return
     if (!canPurchase.value) return
+    // BOOST-EXT: 积分包不进购物车（服务端购物车只接受人工 / 自动交付），直接立即购买
+    if (product.value.fulfillment_type === 'boost_points') {
+      buyNow()
+      return
+    }
     purchaseWarning.value = ''
     if (requiresLogin.value) {
       router.push(`/auth/login?redirect=${encodeURIComponent(route.fullPath)}`)

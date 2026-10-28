@@ -9,6 +9,7 @@ export const fulfillmentTypeLabel = (t: TranslateFn, type?: string, scope: Fulfi
     manual: t(`${baseKey}.manual`),
     auto: t(`${baseKey}.auto`),
     upstream: t(`${baseKey}.manual`),
+    boost_points: t(`${baseKey}.boost_points`), // BOOST-EXT
   }
   return map[type] || type
 }

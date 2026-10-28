@@ -63,6 +63,11 @@
                   <span class="ml-1 text-sm font-normal text-muted-foreground">{{ t('boost.points') }}</span>
                 </span>
               </div>
+              <!-- BOOST-EXT S4: 积分余额（下单在 S5 开放） -->
+              <div v-if="userAuthStore.isAuthenticated" class="flex items-center justify-between rounded-lg bg-secondary/60 px-3 py-2 text-xs">
+                <span class="text-muted-foreground">{{ t('boost.myAvailable') }}：<b class="font-mono text-foreground">{{ available ?? '—' }}</b></span>
+                <router-link to="/boost/points" class="text-primary hover:underline">{{ t('boost.buyPoints') }}</router-link>
+              </div>
               <div v-if="plan && plan.rate < 100" class="text-xs text-emerald-600">{{ t('boost.memberRate', { rate: plan.rate / 10 }) }}</div>
               <div v-else-if="!userAuthStore.isAuthenticated" class="text-xs text-muted-foreground">
                 <router-link :to="`/auth/login?redirect=${encodeURIComponent(route.fullPath)}`" class="text-primary hover:underline">{{ t('boost.loginForDiscount') }}</router-link>
@@ -106,7 +111,7 @@ import { getImageUrl } from '../utils/image'
 import { usePageSeo } from '../composables/usePageSeo'
 import { toast } from '../composables/useToast'
 import { useUserAuthStore } from '../stores/userAuth'
-import { boostAPI, type BoostFeature, type BoostGame, type BoostPlan } from '../api/boost'
+import { boostAPI, boostPointsAPI, type BoostFeature, type BoostGame, type BoostPlan } from '../api/boost'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -122,6 +127,16 @@ const plan = ref<BoostPlan | null>(null)
 const quoting = ref(false)
 const quoteError = ref('')
 const submitted = ref(false)
+const available = ref<number | null>(null)
+
+const loadPoints = async () => {
+  if (!userAuthStore.isAuthenticated) return
+  try {
+    available.value = (await boostPointsAPI.summary()).available
+  } catch {
+    available.value = null
+  }
+}
 
 usePageSeo({
   title: () => (game.value ? `${game.value.name} · ${t('boost.title')}` : t('boost.title')),
@@ -189,4 +204,5 @@ const submit = () => {
 watch(() => route.params.code, (code) => {
   if (typeof code === 'string' && code) void load(code)
 }, { immediate: true })
+void loadPoints()
 </script>

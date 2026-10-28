@@ -170,7 +170,8 @@
     },
     "fulfillmentType": {
       "manual": "人工交付",
-      "auto": "自动交付"
+      "auto": "自动交付",
+      "boost_points": "代练积分"
     },
     "filter": "筛选",
     "closeFilter": "关闭筛选",
@@ -1631,7 +1632,8 @@
     "instructionsTitle": "使用说明",
     "fulfillmentTypes": {
       "manual": "人工交付",
-      "auto": "自动交付"
+      "auto": "自动交付",
+      "boost_points": "代练积分"
     },
     "fulfillmentStatuses": {
       "pending": "待交付",
@@ -1745,6 +1747,37 @@
     "comingSoon": "账号绑定和下单即将开放（需要先接入积分）",
     "fixErrors": "请先修正上面标红的选项",
     "notFound": "游戏不存在或已下线",
-    "quoteFailed": "报价失败，请稍后重试"
+    "quoteFailed": "报价失败，请稍后重试",
+    "pointsTitle": "我的代练积分",
+    "available": "可用积分",
+    "frozen": "冻结中",
+    "frozenHint": "进行中的代练任务占用，结束后按完成量扣除，其余退回",
+    "expiringSoon": "30 天内到期",
+    "expiresOn": "{amount} 点 {date} 到期",
+    "buyPoints": "购买积分",
+    "buyPointsHint": "积分只用于代练，不能提现或转回余额。先到期的积分先用。",
+    "noPacks": "暂时没有可购买的积分包",
+    "bonusIncluded": "含赠送 {bonus}",
+    "validDays": "到账后 {days} 天有效",
+    "permanent": "永久有效",
+    "ledgerTitle": "积分明细",
+    "loading": "加载中…",
+    "noLedger": "还没有积分记录",
+    "frozenDelta": "冻结 {delta}",
+    "balanceAfter": "余 {n}",
+    "prevPage": "上一页",
+    "nextPage": "下一页",
+    "pointsRules": "积分包退款前会先撤回未使用的积分，按未使用比例退款。",
+    "myAvailable": "我的可用积分",
+    "ledgerTypes": {
+      "purchase": "购买积分包",
+      "grant": "平台发放",
+      "hold": "下单冻结",
+      "release": "任务退回",
+      "consume": "任务消耗",
+      "expire": "积分到期",
+      "revoke": "退款撤回",
+      "admin_adjust": "平台扣减"
+    }
   }
 }

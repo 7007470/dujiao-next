@@ -39,6 +39,7 @@ export function useProductLabels() {
   }
 
   const getFulfillmentTypeLabel = (fulfillmentType: string) => {
+    if (fulfillmentType === 'boost_points') return t('products.fulfillmentType.boost_points') // BOOST-EXT
     return fulfillmentType === 'auto' ? t('products.fulfillmentType.auto') : t('products.fulfillmentType.manual')
   }
 

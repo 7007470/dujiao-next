@@ -68,6 +68,12 @@ const routes = [
         meta: { permission: 'GET:/admin/boost/games/:id/features' },
       },
       {
+        path: 'boost/points',
+        name: 'boost-points',
+        component: () => import('@/views/admin/BoostPoints.vue'),
+        meta: { permission: 'GET:/admin/boost/point-accounts' },
+      },
+      {
         path: 'gift-cards',
         name: 'gift-cards',
         component: () => import('@/views/admin/GiftCards.vue'),

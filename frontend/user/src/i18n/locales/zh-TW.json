@@ -170,7 +170,8 @@
     },
     "fulfillmentType": {
       "manual": "人工交付",
-      "auto": "自動交付"
+      "auto": "自動交付",
+      "boost_points": "代練積分"
     },
     "filter": "篩選",
     "closeFilter": "關閉篩選",
@@ -1678,7 +1679,8 @@
     "instructionsTitle": "使用說明",
     "fulfillmentTypes": {
       "manual": "人工交付",
-      "auto": "自動交付"
+      "auto": "自動交付",
+      "boost_points": "代練積分"
     },
     "fulfillmentStatuses": {
       "pending": "待交付",
@@ -1745,6 +1747,37 @@
     "comingSoon": "帳號綁定和下單即將開放（需要先接入積分）",
     "fixErrors": "請先修正上面標紅的選項",
     "notFound": "遊戲不存在或已下線",
-    "quoteFailed": "報價失敗，請稍後重試"
+    "quoteFailed": "報價失敗，請稍後重試",
+    "pointsTitle": "我的代練積分",
+    "available": "可用積分",
+    "frozen": "凍結中",
+    "frozenHint": "進行中的代練任務佔用，結束後按完成量扣除，其餘退回",
+    "expiringSoon": "30 天內到期",
+    "expiresOn": "{amount} 點 {date} 到期",
+    "buyPoints": "購買積分",
+    "buyPointsHint": "積分只用於代練，不能提現或轉回餘額。先到期的積分先用。",
+    "noPacks": "暫時沒有可購買的積分包",
+    "bonusIncluded": "含贈送 {bonus}",
+    "validDays": "到帳後 {days} 天有效",
+    "permanent": "永久有效",
+    "ledgerTitle": "積分明細",
+    "loading": "載入中…",
+    "noLedger": "還沒有積分記錄",
+    "frozenDelta": "凍結 {delta}",
+    "balanceAfter": "餘 {n}",
+    "prevPage": "上一頁",
+    "nextPage": "下一頁",
+    "pointsRules": "積分包退款前會先撤回未使用的積分，按未使用比例退款。",
+    "myAvailable": "我的可用積分",
+    "ledgerTypes": {
+      "purchase": "購買積分包",
+      "grant": "平台發放",
+      "hold": "下單凍結",
+      "release": "任務退回",
+      "consume": "任務消耗",
+      "expire": "積分到期",
+      "revoke": "退款撤回",
+      "admin_adjust": "平台扣減"
+    }
   }
 }

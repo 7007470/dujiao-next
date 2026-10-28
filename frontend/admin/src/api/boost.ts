@@ -193,3 +193,129 @@ export const boostAdminAPI = {
   previewFeature: (definition: string, params: Record<string, unknown>, discountRate: number) =>
     api.post('/admin/boost/features/preview', { definition, params, discount_rate: discountRate }).then(unwrap<BoostPlan>),
 }
+
+// ---- 积分（S4）----
+
+export type BoostLedgerType = 'purchase' | 'grant' | 'hold' | 'release' | 'consume' | 'expire' | 'revoke' | 'admin_adjust'
+
+export interface BoostPointPack {
+  id: number
+  product_id: number
+  sku_id: number
+  name: string
+  points: number
+  bonus: number
+  valid_days?: number | null
+  active: boolean
+  product_slug: string
+  product_title: string
+  product_active: boolean
+  fulfillment_type: string
+  sku_code: string
+  sku_active: boolean
+  price: string
+}
+
+export interface BoostPointAccount {
+  user_id: number
+  email: string
+  nickname: string
+  available: number
+  frozen: number
+  updated_at: string
+}
+
+export interface BoostPointLot {
+  id: number
+  source_type: 'order' | 'grant' | 'promo'
+  source_ref: string
+  amount: number
+  remaining: number
+  status: 'active' | 'exhausted' | 'expired' | 'revoked'
+  expires_at?: string | null
+  suggest_refund?: string | null
+  created_at: string
+}
+
+export interface BoostLedgerEntry {
+  id: number
+  user_id: number
+  type: BoostLedgerType
+  delta_available: number
+  delta_frozen: number
+  available_after: number
+  frozen_after: number
+  biz_key: string
+  task_id?: number
+  order_id?: number
+  operator_admin_id?: number
+  remark: string
+  created_at: string
+}
+
+export interface BoostPointsSummary {
+  available: number
+  frozen: number
+  expiring_soon: { lot_id: number; amount: number; expires_at: string; source_type: string }[]
+}
+
+export interface BoostRevokeResult {
+  order_no: string
+  total: number
+  used: number
+  revoked: number
+  suggest_refund: string
+  already: boolean
+}
+
+export interface BoostPointsAdjust {
+  user_id: number
+  amount: number
+  valid_days?: number | null
+  reason: string
+  request_id: string
+}
+
+export interface BoostPagination {
+  page: number
+  page_size: number
+  total: number
+  total_page: number
+}
+
+export interface BoostPage<T> {
+  items: T[]
+  pagination: BoostPagination
+}
+
+const unwrapPage = <T>(res: { data: any }): BoostPage<T> => ({
+  items: (res.data?.data as T[]) || [],
+  pagination: res.data?.pagination || { page: 1, page_size: 20, total: 0, total_page: 1 },
+})
+
+export const boostPointsAPI = {
+  listPacks: () => api.get('/admin/boost/point-packs').then(unwrap<BoostPointPack[]>),
+  createPack: (data: Partial<BoostPointPack>) => api.post('/admin/boost/point-packs', data).then(unwrap<BoostPointPack>),
+  updatePack: (id: number, data: Partial<BoostPointPack>) => api.put(`/admin/boost/point-packs/${id}`, data).then(unwrap<BoostPointPack>),
+
+  listAccounts: (params: { keyword?: string; user_id?: number; page?: number; page_size?: number }) =>
+    api.get('/admin/boost/point-accounts', { params }).then(unwrapPage<BoostPointAccount>),
+  listLedger: (params: { user_id?: number; type?: string; page?: number; page_size?: number }) =>
+    api.get('/admin/boost/point-ledger', { params }).then(unwrapPage<BoostLedgerEntry>),
+  userPoints: (userId: number) =>
+    api.get(`/admin/boost/users/${userId}/points`).then(unwrap<{ summary: BoostPointsSummary; lots: BoostPointLot[] }>),
+  grant: (data: BoostPointsAdjust) => api.post('/admin/boost/points/grant', data).then(unwrap<BoostLedgerEntry>),
+  deduct: (data: BoostPointsAdjust) => api.post('/admin/boost/points/deduct', data).then(unwrap<BoostLedgerEntry>),
+  revokeOrder: (orderNo: string) => api.post('/admin/boost/points/revoke-order', { order_no: orderNo }).then(unwrap<BoostRevokeResult>),
+}
+
+export const ledgerTypeText: Record<BoostLedgerType, string> = {
+  purchase: '购买',
+  grant: '发放',
+  hold: '冻结',
+  release: '退回',
+  consume: '消耗',
+  expire: '到期',
+  revoke: '撤回',
+  admin_adjust: '扣减',
+}

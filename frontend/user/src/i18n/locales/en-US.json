@@ -170,7 +170,8 @@
     },
     "fulfillmentType": {
       "manual": "Manual delivery",
-      "auto": "Auto fulfillment"
+      "auto": "Auto fulfillment",
+      "boost_points": "Boost points"
     },
     "filter": "Filter",
     "closeFilter": "Close filter",
@@ -1678,7 +1679,8 @@
     "instructionsTitle": "Usage instructions",
     "fulfillmentTypes": {
       "manual": "Manual",
-      "auto": "Auto"
+      "auto": "Auto",
+      "boost_points": "Boost points"
     },
     "fulfillmentStatuses": {
       "pending": "Pending",
@@ -1745,6 +1747,37 @@
     "comingSoon": "Account linking and ordering are coming soon (points first)",
     "fixErrors": "Please fix the highlighted options first",
     "notFound": "This game does not exist or is offline",
-    "quoteFailed": "Could not get a price. Please try again"
+    "quoteFailed": "Could not get a price. Please try again",
+    "pointsTitle": "My boost points",
+    "available": "Available",
+    "frozen": "Frozen",
+    "frozenHint": "Held by running boost tasks; unused points return when the task ends",
+    "expiringSoon": "Expiring in 30 days",
+    "expiresOn": "{amount} pts expire {date}",
+    "buyPoints": "Buy points",
+    "buyPointsHint": "Points can only be used for boosting and cannot be withdrawn. Points expiring first are used first.",
+    "noPacks": "No point packs available",
+    "bonusIncluded": "incl. {bonus} bonus",
+    "validDays": "Valid {days} days",
+    "permanent": "Never expires",
+    "ledgerTitle": "Points history",
+    "loading": "Loading…",
+    "noLedger": "No records yet",
+    "frozenDelta": "frozen {delta}",
+    "balanceAfter": "bal. {n}",
+    "prevPage": "Previous",
+    "nextPage": "Next",
+    "pointsRules": "Before a point pack is refunded, its unused points are revoked and the refund is proportional to unused points.",
+    "myAvailable": "My points",
+    "ledgerTypes": {
+      "purchase": "Bought pack",
+      "grant": "Granted",
+      "hold": "Held for task",
+      "release": "Returned",
+      "consume": "Used",
+      "expire": "Expired",
+      "revoke": "Revoked (refund)",
+      "admin_adjust": "Deducted"
+    }
   }
 }

@@ -92,3 +92,55 @@ export const boostAPI = {
   quote: (featureId: number, params: Record<string, unknown>, signedIn: boolean) =>
     api.post(signedIn ? '/boost/quote' : '/public/boost/quote', { feature_id: featureId, params }).then(unwrap<BoostPlan>),
 }
+
+// ---- 积分（S4）----
+
+export interface BoostPointPack {
+  id: number
+  name: string
+  points: number
+  bonus: number
+  valid_days?: number | null
+  product_id: number
+  product_slug: string
+  sku_id: number
+  price: string
+}
+
+export interface BoostPointsSummary {
+  available: number
+  frozen: number
+  expiring_soon: { lot_id: number; amount: number; expires_at: string; source_type: string }[]
+}
+
+export type BoostLedgerType = 'purchase' | 'grant' | 'hold' | 'release' | 'consume' | 'expire' | 'revoke' | 'admin_adjust'
+
+export interface BoostLedgerRow {
+  id: number
+  type: BoostLedgerType
+  delta_available: number
+  delta_frozen: number
+  available_after: number
+  frozen_after: number
+  task_id?: number
+  order_id?: number
+  remark: string
+  created_at: string
+}
+
+export interface BoostPagination {
+  page: number
+  page_size: number
+  total: number
+  total_page: number
+}
+
+export const boostPointsAPI = {
+  packs: () => api.get('/public/boost/point-packs').then(unwrap<BoostPointPack[]>),
+  summary: () => api.get('/boost/points').then(unwrap<BoostPointsSummary>),
+  ledger: (page = 1, pageSize = 20) =>
+    api.get('/boost/points/ledger', { params: { page, page_size: pageSize } }).then((res: { data: any }) => ({
+      items: (res.data?.data as BoostLedgerRow[]) || [],
+      pagination: (res.data?.pagination as BoostPagination) || { page: 1, page_size: pageSize, total: 0, total_page: 1 },
+    })),
+}

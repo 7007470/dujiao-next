@@ -668,6 +668,7 @@ const messages = {
       },
       navItems: {
         boostGames: '代练游戏', // BOOST-EXT
+        boostPoints: '代练积分', // BOOST-EXT
         dashboard: '仪表盘',
         productCategories: '商品分类',
         productList: '商品列表',
@@ -1543,6 +1544,7 @@ const messages = {
         fulfillmentType: {
           manual: '人工交付',
           auto: '自动交付',
+          boost_points: '代练积分', // BOOST-EXT
         },
         mappedProduct: '对接商品',
         mappedFulfillmentLocked: '对接商品交付类型由上游管理，不可修改',
@@ -5117,6 +5119,7 @@ const messages = {
       },
       navItems: {
         boostGames: '代練遊戲', // BOOST-EXT
+        boostPoints: '代練積分', // BOOST-EXT
         dashboard: '儀表板',
         productCategories: '商品分類',
         productList: '商品列表',
@@ -5992,6 +5995,7 @@ const messages = {
         fulfillmentType: {
           manual: '人工交付',
           auto: '自動交付',
+          boost_points: '代練積分', // BOOST-EXT
         },
         mappedProduct: '對接商品',
         mappedFulfillmentLocked: '對接商品交付類型由上游管理，不可修改',
@@ -9566,6 +9570,7 @@ const messages = {
       },
       navItems: {
         boostGames: 'Boost Games', // BOOST-EXT
+        boostPoints: 'Boost Points', // BOOST-EXT
         dashboard: 'Dashboard',
         productCategories: 'Product Categories',
         productList: 'Product List',
@@ -10441,6 +10446,7 @@ const messages = {
         fulfillmentType: {
           manual: 'Manual',
           auto: 'Auto',
+          boost_points: 'Boost points', // BOOST-EXT
         },
         mappedProduct: 'Mapped',
         mappedFulfillmentLocked: 'Fulfillment type is managed by upstream and cannot be changed',
