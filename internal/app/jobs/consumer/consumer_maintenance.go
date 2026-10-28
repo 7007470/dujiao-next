@@ -70,6 +70,28 @@ func (c *Consumer) handleResellerConfirmLedger(_ context.Context, _ *asynq.Task)
 	return nil
 }
 
+// handleBoostPointsMaintain BOOST-EXT：积分批次到期失效；补发支付成功但没到账的积分包订单。
+func (c *Consumer) handleBoostPointsMaintain(_ context.Context, _ *asynq.Task) error {
+	if c == nil || c.BoostPointsService == nil {
+		return nil
+	}
+	expired, err := c.BoostPointsService.ExpireDue(500)
+	if err != nil {
+		logger.Warnw("worker_boost_points_expire_failed", "error", err)
+	}
+	granted, grantErr := c.BoostPointsService.RetryUngranted(2*time.Minute, 100)
+	if grantErr != nil {
+		logger.Warnw("worker_boost_points_retry_grant_failed", "error", grantErr)
+	}
+	if expired > 0 || granted > 0 {
+		logger.Infow("worker_boost_points_maintain_ok", "expired_lots", expired, "granted_orders", granted)
+	}
+	if err != nil {
+		return err
+	}
+	return grantErr
+}
+
 // handleReconciliationRun 处理对账任务执行。
 func (c *Consumer) handleReconciliationRun(ctx context.Context, task *asynq.Task) error {
 	if c == nil || task == nil || c.ReconciliationService == nil {

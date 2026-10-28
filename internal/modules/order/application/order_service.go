@@ -50,6 +50,7 @@ type OrderService struct {
 	resellerAccounting      resellerAccountingTransactions
 	riskControlSvc          orderriskcontract.Controller
 	productMappingService   upstreamStockEnsurer
+	refundGuard             OrderRefundGuard // BOOST-EXT
 	expireMinutes           int
 }
 
@@ -110,6 +111,18 @@ func (s *OrderService) SetProductMappingService(svc upstreamStockEnsurer) {
 		return
 	}
 	s.productMappingService = svc
+}
+
+// OrderRefundGuard 把订单改成已退款 / 部分退款前的业务检查（BOOST-EXT：积分包须先撤回积分）。
+type OrderRefundGuard interface {
+	EnsureRefundable(orderID uint) error
+}
+
+// SetRefundGuard 注入退款前检查（BOOST-EXT）。
+func (s *OrderService) SetRefundGuard(guard OrderRefundGuard) {
+	if s != nil {
+		s.refundGuard = guard
+	}
 }
 
 // NewOrderService 创建订单服务

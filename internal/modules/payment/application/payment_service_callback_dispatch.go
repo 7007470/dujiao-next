@@ -46,6 +46,18 @@ func (s *PaymentService) enqueueOrderPaidAsync(order *orderdomain.Order, payment
 	s.enqueueOrderPaidNotificationAsync(order, payment, log)
 	s.enqueueOrderPaidBotNotifyAsync(order, log)
 
+	// BOOST-EXT: 积分包订单支付成功即发放代练积分。必须在"队列未启用就返回"之前，
+	// 否则不开 Redis 时不到账。只有含积分包的订单才会真正写库；失败由 boost 定时补发兜底。
+	if s.boostPoints != nil {
+		if err := s.boostPoints.GrantForPaidOrder(order.ID); err != nil {
+			log.Warnw("payment_boost_points_grant_failed",
+				"order_id", order.ID,
+				"order_no", order.OrderNo,
+				"error", err,
+			)
+		}
+	}
+
 	// 订单支付成功后触发会员等级升级检查
 	if s.memberLevelSvc != nil && order.UserID > 0 {
 		if err := s.memberLevelSvc.OnOrderPaid(order.UserID, order.TotalAmount.Decimal); err != nil {

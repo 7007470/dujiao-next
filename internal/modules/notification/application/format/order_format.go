@@ -97,6 +97,8 @@ func notificationFulfillmentLabel(locale, fulfillmentType string) string {
 		return localizedNotificationText(locale, "自动交付", "自動交付", "Auto")
 	case constants.FulfillmentTypeUpstream:
 		return localizedNotificationText(locale, "上游交付", "上游交付", "Upstream")
+	case constants.FulfillmentTypeBoostPoints: // BOOST-EXT
+		return localizedNotificationText(locale, "代练积分", "代練積分", "Boost points")
 	default:
 		return localizedNotificationText(locale, "人工交付", "人工交付", "Manual")
 	}
@@ -108,6 +110,8 @@ func NormalizeFulfillmentType(fulfillmentType string) string {
 		return constants.FulfillmentTypeAuto
 	case constants.FulfillmentTypeUpstream:
 		return constants.FulfillmentTypeUpstream
+	case constants.FulfillmentTypeBoostPoints: // BOOST-EXT: 不能当成人工交付（否则会发"待人工发货"通知）
+		return constants.FulfillmentTypeBoostPoints
 	default:
 		return constants.FulfillmentTypeManual
 	}

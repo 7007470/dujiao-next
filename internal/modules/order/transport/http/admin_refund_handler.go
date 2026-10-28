@@ -19,6 +19,7 @@ import (
 var (
 	ErrOrderFetchFailed           = errors.New("order fetch failed")
 	ErrOrderRefundExpired         = errors.New("order refund expired")
+	ErrOrderRefundBlocked         = errors.New("order refund blocked") // BOOST-EXT
 	ErrWalletInvalidAmount        = errors.New("wallet invalid amount")
 	ErrWalletRefundExceeded       = errors.New("wallet refund exceeded")
 	ErrWalletNotSupportedForGuest = errors.New("wallet not supported for guest")
@@ -227,6 +228,8 @@ func (h *AdminRefundHandler) AdminRefundOrderToWallet(c *gin.Context) {
 			ginutil.RespondError(c, response.CodeBadRequest, "error.order_status_invalid", nil)
 		case errors.Is(err, ErrOrderRefundExpired):
 			ginutil.RespondError(c, response.CodeBadRequest, "error.order_refund_expired", nil)
+		case errors.Is(err, ErrOrderRefundBlocked): // BOOST-EXT
+			ginutil.RespondError(c, response.CodeBadRequest, "error.order_refund_points_revoke_required", nil)
 		case errors.Is(err, ErrWalletInvalidAmount), errors.Is(err, ErrWalletRefundExceeded), errors.Is(err, ErrWalletNotSupportedForGuest):
 			ginutil.RespondError(c, response.CodeBadRequest, "error.bad_request", nil)
 		default:
@@ -277,6 +280,8 @@ func (h *AdminRefundHandler) AdminManualRefundOrder(c *gin.Context) {
 			ginutil.RespondError(c, response.CodeBadRequest, "error.order_status_invalid", nil)
 		case errors.Is(err, ErrOrderRefundExpired):
 			ginutil.RespondError(c, response.CodeBadRequest, "error.order_refund_expired", nil)
+		case errors.Is(err, ErrOrderRefundBlocked): // BOOST-EXT
+			ginutil.RespondError(c, response.CodeBadRequest, "error.order_refund_points_revoke_required", nil)
 		case errors.Is(err, ErrWalletInvalidAmount), errors.Is(err, ErrWalletRefundExceeded):
 			ginutil.RespondError(c, response.CodeBadRequest, "error.bad_request", nil)
 		default:

@@ -191,6 +191,7 @@ var messages = map[string]map[string]string{
 		"error.order_fetch_failed":                       "获取订单失败",
 		"error.order_status_invalid":                     "订单状态不合法",
 		"error.order_refund_expired":                     "已超过订单最大可退款时间",
+		"error.order_refund_points_revoke_required":      "积分包订单必须先在「代练管理 → 积分」撤回剩余积分，再按建议金额退款", // BOOST-EXT
 		"error.order_cancel_not_allowed":                 "当前状态不允许取消订单",
 		"error.order_update_failed":                      "更新订单失败",
 		"error.guest_email_required":                     "游客邮箱不能为空",
@@ -552,6 +553,7 @@ var messages = map[string]map[string]string{
 		"error.order_fetch_failed":                       "獲取訂單失敗",
 		"error.order_status_invalid":                     "訂單狀態不合法",
 		"error.order_refund_expired":                     "已超過訂單最大可退款時間",
+		"error.order_refund_points_revoke_required":      "積分包訂單必須先在「代練管理 → 積分」撤回剩餘積分，再按建議金額退款", // BOOST-EXT
 		"error.order_cancel_not_allowed":                 "當前狀態不允許取消訂單",
 		"error.order_update_failed":                      "更新訂單失敗",
 		"error.guest_email_required":                     "遊客郵箱不能為空",
@@ -913,6 +915,7 @@ var messages = map[string]map[string]string{
 		"error.order_fetch_failed":                       "Failed to fetch order",
 		"error.order_status_invalid":                     "Invalid order status",
 		"error.order_refund_expired":                     "Order exceeded the maximum refundable period",
+		"error.order_refund_points_revoke_required":      "Revoke the remaining boost points of this order first (Boosting → Points), then refund the suggested amount", // BOOST-EXT
 		"error.order_cancel_not_allowed":                 "Order cannot be canceled in current status",
 		"error.order_update_failed":                      "Failed to update order",
 		"error.guest_email_required":                     "Guest email is required",

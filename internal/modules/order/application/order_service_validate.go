@@ -192,8 +192,13 @@ func (s *OrderService) buildOrderResult(input orderCreateParams) (*orderBuildRes
 		if fulfillmentType == "" {
 			fulfillmentType = constants.FulfillmentTypeManual
 		}
-		if fulfillmentType != constants.FulfillmentTypeManual && fulfillmentType != constants.FulfillmentTypeAuto && fulfillmentType != constants.FulfillmentTypeUpstream {
+		if fulfillmentType != constants.FulfillmentTypeManual && fulfillmentType != constants.FulfillmentTypeAuto && fulfillmentType != constants.FulfillmentTypeUpstream &&
+			fulfillmentType != constants.FulfillmentTypeBoostPoints { // BOOST-EXT
 			return nil, ErrFulfillmentInvalid
+		}
+		// BOOST-EXT: 积分记在用户账户上，游客不能买积分包
+		if fulfillmentType == constants.FulfillmentTypeBoostPoints && (input.IsGuest || input.UserID == 0) {
+			return nil, ErrProductPurchaseNotAllowed
 		}
 		if fulfillmentType == constants.FulfillmentTypeManual &&
 			productdomain.ShouldEnforceManualSKUStock(product, sku) &&

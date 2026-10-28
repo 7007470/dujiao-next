@@ -51,5 +51,6 @@ func (c *Consumer) Register(mux *asynq.ServeMux) {
 	mux.HandleFunc(queue.TaskDownstreamCallback, withPanicRecovery(queue.TaskDownstreamCallback, c.handleDownstreamCallback))
 	mux.HandleFunc(queue.TaskReconciliationRun, withPanicRecovery(queue.TaskReconciliationRun, c.handleReconciliationRun))
 	mux.HandleFunc(queue.TaskBotNotify, withPanicRecovery(queue.TaskBotNotify, c.handleBotNotify))
+	mux.HandleFunc(queue.TaskBoostPointsMaintain, withPanicRecovery(queue.TaskBoostPointsMaintain, c.handleBoostPointsMaintain)) // BOOST-EXT
 	mux.HandleFunc(queue.TaskTelegramBroadcast, withPanicRecovery(queue.TaskTelegramBroadcast, c.handleTelegramBroadcast))
 }

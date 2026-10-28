@@ -32,6 +32,14 @@ func (h *PublicHandler) decorateProductStock(product *productdomain.Product, ite
 		fulfillmentType = constants.FulfillmentTypeManual
 	}
 
+	// BOOST-EXT: 积分包不占库存，始终可售
+	if fulfillmentType == constants.FulfillmentTypeBoostPoints {
+		item.ManualStockAvailable = constants.ManualStockUnlimited
+		item.StockStatus = constants.ProductStockStatusUnlimited
+		item.IsSoldOut = false
+		return
+	}
+
 	// upstream 类型：根据 SKU 映射中的上游库存判断
 	if fulfillmentType == constants.FulfillmentTypeUpstream {
 		h.decorateUpstreamStock(product, item)

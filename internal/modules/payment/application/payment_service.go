@@ -66,6 +66,12 @@ type PaymentService struct {
 	memberLevelSvc          MemberLevelProgressor
 	paymentProviderRegistry paymentcontract.GatewayRegistry
 	resellerAccounting      resellerAccountingTransactions
+	boostPoints             BoostPointsGranter // BOOST-EXT
+}
+
+// BoostPointsGranter 积分包订单支付成功后发放代练积分（BOOST-EXT）。幂等；失败由 boost 定时补发兜底。
+type BoostPointsGranter interface {
+	GrantForPaidOrder(orderID uint) error
 }
 
 type MemberLevelProgressor interface {
@@ -125,6 +131,7 @@ type PaymentServiceOptions struct {
 	NotificationService     notificationcontract.NotificationEnqueuer
 	PaymentProviderRegistry paymentcontract.GatewayRegistry
 	ResellerAccounting      resellerAccountingTransactions
+	BoostPoints             BoostPointsGranter // BOOST-EXT
 }
 
 // NewPaymentService 创建支付服务
@@ -147,6 +154,7 @@ func NewPaymentService(opts PaymentServiceOptions) *PaymentService {
 		notificationSvc:         opts.NotificationService,
 		paymentProviderRegistry: opts.PaymentProviderRegistry,
 		resellerAccounting:      opts.ResellerAccounting,
+		boostPoints:             opts.BoostPoints, // BOOST-EXT
 	}
 }
 

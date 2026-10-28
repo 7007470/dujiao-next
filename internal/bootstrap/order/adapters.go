@@ -497,6 +497,7 @@ func mapOrderTransportError(err error) error {
 		{orderapp.ErrGuestOrderNotFound, ordertransport.ErrGuestOrderNotFound},
 		{orderapp.ErrOrderCancelNotAllowed, ordertransport.ErrOrderCancelNotAllowed},
 		{orderapp.ErrOrderRefundExpired, ordertransport.ErrOrderRefundExpired},
+		{orderapp.ErrOrderRefundBlocked, ordertransport.ErrOrderRefundBlocked}, // BOOST-EXT
 		{walletcontract.ErrInvalidAmount, ordertransport.ErrWalletInvalidAmount},
 		{walletcontract.ErrRefundExceeded, ordertransport.ErrWalletRefundExceeded},
 		{walletcontract.ErrNotSupportedForGuest, ordertransport.ErrWalletNotSupportedForGuest},

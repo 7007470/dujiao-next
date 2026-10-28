@@ -424,6 +424,8 @@ func (h *AdminHandler) AdminUpdateOrderStatus(c *gin.Context) {
 			ginutil.RespondError(c, response.CodeNotFound, "error.order_not_found", nil)
 		case errors.Is(err, ErrOrderStatusInvalid):
 			ginutil.RespondError(c, response.CodeBadRequest, "error.order_status_invalid", nil)
+		case errors.Is(err, ErrOrderRefundBlocked): // BOOST-EXT
+			ginutil.RespondError(c, response.CodeBadRequest, "error.order_refund_points_revoke_required", nil)
 		default:
 			ginutil.RespondError(c, response.CodeInternal, "error.order_update_failed", err)
 		}

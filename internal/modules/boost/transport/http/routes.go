@@ -48,3 +48,37 @@ func RegisterAdminRoutes(authorized gin.IRoutes, handler *AdminHandler) {
 	authorized.GET("/boost/features/:id/versions", handler.ListFeatureVersions)
 	authorized.GET("/boost/features/:id/versions/:version", handler.GetFeatureVersion)
 }
+
+// RegisterPointsPublicRoutes 用户端公开：积分包列表。
+func RegisterPointsPublicRoutes(public gin.IRoutes, handler *PointsHandler) {
+	if public == nil || handler == nil {
+		panic("boost points public routes: required dependency is nil")
+	}
+	public.GET("/boost/point-packs", handler.PublicPacks)
+}
+
+// RegisterPointsUserRoutes 用户端登录后：我的积分、积分明细。
+func RegisterPointsUserRoutes(user gin.IRoutes, handler *PointsHandler) {
+	if user == nil || handler == nil {
+		panic("boost points user routes: required dependency is nil")
+	}
+	user.GET("/boost/points", handler.MySummary)
+	user.GET("/boost/points/ledger", handler.MyLedger)
+}
+
+// RegisterPointsAdminRoutes 后台积分管理（字面量路径，见 RegisterAdminRoutes 注释）。
+func RegisterPointsAdminRoutes(authorized gin.IRoutes, handler *PointsHandler) {
+	if authorized == nil || handler == nil {
+		panic("boost points admin routes: required dependency is nil")
+	}
+	authorized.GET("/boost/point-packs", handler.ListPacks)
+	authorized.POST("/boost/point-packs", handler.CreatePack)
+	authorized.PUT("/boost/point-packs/:id", handler.UpdatePack)
+
+	authorized.GET("/boost/point-accounts", handler.ListAccounts)
+	authorized.GET("/boost/point-ledger", handler.ListLedger)
+	authorized.GET("/boost/users/:id/points", handler.GetUserPoints)
+	authorized.POST("/boost/points/grant", handler.Grant)
+	authorized.POST("/boost/points/deduct", handler.Deduct)
+	authorized.POST("/boost/points/revoke-order", handler.RevokeOrder)
+}

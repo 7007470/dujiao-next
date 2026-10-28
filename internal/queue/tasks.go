@@ -39,6 +39,8 @@ const (
 	TaskBotNotify = constants.TaskBotNotify
 	// TaskTelegramBroadcast Telegram 群发任务
 	TaskTelegramBroadcast = constants.TaskTelegramBroadcast
+	// TaskBoostPointsMaintain 代练积分到期与补发（BOOST-EXT）
+	TaskBoostPointsMaintain = constants.TaskBoostPointsMaintain
 )
 
 // OrderStatusEmailPayload 订单状态邮件任务载荷
@@ -138,6 +140,11 @@ func NewAffiliateConfirmCommissionsTask() *asynq.Task {
 // NewResellerConfirmLedgerTask 创建分销商账务到期确认任务。
 func NewResellerConfirmLedgerTask() *asynq.Task {
 	return asynq.NewTask(TaskResellerConfirmLedger, nil)
+}
+
+// NewBoostPointsMaintainTask 创建代练积分维护任务（BOOST-EXT）
+func NewBoostPointsMaintainTask() *asynq.Task {
+	return asynq.NewTask(TaskBoostPointsMaintain, nil)
 }
 
 // NewUpstreamSyncStockTask 创建上游库存同步任务

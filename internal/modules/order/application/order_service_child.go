@@ -177,6 +177,12 @@ func (s *OrderService) UpdateOrderStatus(orderID uint, targetStatus string) (*or
 	if target == constants.OrderStatusPaid {
 		return nil, ErrOrderStatusInvalid
 	}
+	// BOOST-EXT: 积分包订单不能绕过"先撤回积分"直接改成已退款
+	if (target == constants.OrderStatusRefunded || target == constants.OrderStatusPartiallyRefunded) && s.refundGuard != nil {
+		if err := s.refundGuard.EnsureRefundable(order.ID); err != nil {
+			return nil, ErrOrderRefundBlocked
+		}
+	}
 	isParent := order.ParentID == nil && len(order.Children) > 0
 	if isParent {
 		switch target {

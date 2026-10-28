@@ -64,6 +64,10 @@ func (s *Service) AdminRefundToWallet(
 		config = loaded
 	}
 
+	if err := s.checkRefundGuard(input.OrderID); err != nil { // BOOST-EXT
+		return nil, nil, nil, err
+	}
+
 	err := s.orderStore.WithinTransaction(func(tx ordercontract.Transaction) error {
 		orderRepository := tx.Orders()
 		locked, err := orderRepository.GetByIDForUpdate(input.OrderID)

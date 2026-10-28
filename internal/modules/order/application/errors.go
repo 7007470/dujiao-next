@@ -26,6 +26,7 @@ var (
 	ErrFulfillmentInvalid         = productcontract.ErrFulfillmentInvalid
 	ErrOrderStatusInvalid         = errors.New("order status invalid")
 	ErrOrderRefundExpired         = errors.New("order refund expired")
+	ErrOrderRefundBlocked         = errors.New("order refund blocked") // BOOST-EXT: 积分包订单须先撤回剩余积分
 	ErrOrderCancelNotAllowed      = errors.New("order cancel not allowed")
 	ErrOrderUpdateFailed          = errors.New("order update failed")
 	ErrGuestOrderNotFound         = errors.New("guest order not found")

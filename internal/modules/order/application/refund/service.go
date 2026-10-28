@@ -1,6 +1,7 @@
 package refund
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -65,6 +66,29 @@ type Service struct {
 	resellerAccounting resellerAccountingTransactions
 	wallets            *walletapp.Service
 	payments           paymentFeeReader
+	refundGuard        RefundGuard // BOOST-EXT
+}
+
+// RefundGuard 退款前的业务检查（BOOST-EXT：积分包订单必须先撤回剩余积分）。
+// 返回任何错误都拒绝退款（fail closed）。
+type RefundGuard interface {
+	EnsureRefundable(orderID uint) error
+}
+
+// SetRefundGuard 设置退款前检查（BOOST-EXT）。
+func (s *Service) SetRefundGuard(guard RefundGuard) {
+	s.refundGuard = guard
+}
+
+// checkRefundGuard BOOST-EXT：在订单事务前调用。
+func (s *Service) checkRefundGuard(orderID uint) error {
+	if s == nil || s.refundGuard == nil {
+		return nil
+	}
+	if err := s.refundGuard.EnsureRefundable(orderID); err != nil {
+		return fmt.Errorf("%w: %v", ErrOrderRefundBlocked, err)
+	}
+	return nil
 }
 
 type affiliateRefundProcessor interface {
@@ -278,6 +302,9 @@ func (s *Service) AdminManualRefund(input AdminManualRefundInput) (*orderdomain.
 	}
 	if initialOrder == nil {
 		return nil, nil, ErrOrderNotFound
+	}
+	if err := s.checkRefundGuard(initialOrder.ID); err != nil { // BOOST-EXT
+		return nil, nil, err
 	}
 	feeSnapshot := paymentFeeRefundSnapshot{rootOrderID: paymentFeeRefundRootOrderID(initialOrder)}
 	if input.PaymentFeeRefunded {

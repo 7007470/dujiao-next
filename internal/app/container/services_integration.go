@@ -112,6 +112,7 @@ func (c *Container) initIntegrationServices() {
 		NotificationService:     c.NotificationService,
 		PaymentProviderRegistry: c.PaymentProviderRegistry,
 		ResellerAccounting:      c.ResellerAccountingLedger,
+		BoostPoints:             c.BoostPointsService, // BOOST-EXT
 	})
 	c.ProcurementOrderService = procurementapp.NewService(procurementapp.Options{
 		Repository:         c.ProcurementOrderRepo,

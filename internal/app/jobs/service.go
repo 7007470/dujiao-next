@@ -106,6 +106,15 @@ func registerPeriodicTasks(scheduler *asynq.Scheduler, consumer *jobconsumer.Con
 			}
 		}
 	}
+	if consumer.BoostPointsService != nil { // BOOST-EXT
+		task := queue.NewBoostPointsMaintainTask()
+		entryID, err := scheduler.Register("@every 1m", task, asynq.Queue(queue.DefaultQueue))
+		if err != nil {
+			logger.Warnw("scheduler_register_boost_points_maintain_failed", "error", err)
+		} else {
+			logger.Infow("scheduler_register_boost_points_maintain_ok", "entry_id", entryID)
+		}
+	}
 	if consumer.ProcurementOrderService != nil {
 		task := queue.NewProcurementSyncAcceptedTask()
 		entryID, err := scheduler.Register("@every 30m", task, asynq.Queue(queue.DefaultQueue))

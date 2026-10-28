@@ -71,6 +71,7 @@ func registerStorefrontRoutes(
 	storefront.Use(middleware.ResellerTenantMiddleware(c.ResellerDomainResolver))
 	affiliateHandler := affiliatebootstrap.NewStorefrontHandler(c)
 	boostStorefrontHandler := boosttransport.NewStorefrontHandler(c.BoostStorefrontService) // BOOST-EXT
+	boostPointsHandler := boosttransport.NewPointsHandler(c.BoostPointsService, nil)        // BOOST-EXT
 
 	// 公开接口
 	public := storefront.Group("/public")
@@ -82,7 +83,8 @@ func registerStorefrontRoutes(
 		captchatransport.RegisterPublicRoutes(public, captchatransport.NewPublicHandler(c.CaptchaService))
 		affiliatetransport.RegisterPublicRoutes(public, affiliateHandler)
 		memberleveltransport.RegisterPublicRoutes(public, publicMemberLevelHandler)
-		boosttransport.RegisterPublicRoutes(public, boostStorefrontHandler) // BOOST-EXT
+		boosttransport.RegisterPublicRoutes(public, boostStorefrontHandler)   // BOOST-EXT
+		boosttransport.RegisterPointsPublicRoutes(public, boostPointsHandler) // BOOST-EXT
 	}
 
 	// 游客接口
@@ -144,7 +146,8 @@ func registerStorefrontRoutes(
 		giftCardRedeem := user.Group("", middleware.RateLimitMiddleware(redisClient, giftCardRedeemRule, middleware.KeyByUserIDAndIP))
 		giftcardtransport.RegisterUserRoutes(giftCardRedeem, userGiftCardHandler)
 		affiliatetransport.RegisterUserRoutes(user, affiliateHandler)
-		boosttransport.RegisterUserRoutes(user, boostStorefrontHandler) // BOOST-EXT
+		boosttransport.RegisterUserRoutes(user, boostStorefrontHandler)   // BOOST-EXT
+		boosttransport.RegisterPointsUserRoutes(user, boostPointsHandler) // BOOST-EXT
 
 		resellerConsole := user.Group("/reseller")
 		resellerConsole.Use(middleware.RequireMainTenantForResellerConsole())

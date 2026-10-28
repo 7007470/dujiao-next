@@ -31,6 +31,7 @@ func TestWorkerConsumerIsSplitByJobDomain(t *testing.T) {
 		"handleAffiliateConfirmCommissions": "consumer_maintenance.go",
 		"handleResellerConfirmLedger":       "consumer_maintenance.go",
 		"handleReconciliationRun":           "consumer_maintenance.go",
+		"handleBoostPointsMaintain":         "consumer_maintenance.go", // BOOST-EXT
 		"handleUpstreamSyncStock":           "consumer_upstream.go",
 		"handleProcurementSubmit":           "consumer_upstream.go",
 		"handleProcurementPollStatus":       "consumer_upstream.go",

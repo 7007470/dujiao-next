@@ -25,6 +25,7 @@ const (
 	FulfillmentTypeAuto        = "auto"
 	FulfillmentTypeManual      = "manual"
 	FulfillmentTypeUpstream    = "upstream"
+	FulfillmentTypeBoostPoints = "boost_points" // BOOST-EXT: 代练积分包，支付后由 boost 模块发放积分
 	FulfillmentStatusPending   = "pending"
 	FulfillmentStatusDelivered = "delivered"
 )
@@ -396,6 +397,7 @@ const (
 	TaskDownstreamCallback          = "downstream:callback"
 	TaskBotNotify                   = "bot:notify"
 	TaskTelegramBroadcast           = "telegram:broadcast"
+	TaskBoostPointsMaintain         = "boost:points_maintain" // BOOST-EXT: 积分到期 + 积分包补发
 )
 
 // Telegram Bot 群发常量

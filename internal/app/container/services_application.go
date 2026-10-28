@@ -32,6 +32,7 @@ import (
 	sitemapcatalog "github.com/dujiao-next/internal/modules/sitemap/infrastructure/catalogreader"
 	walletapp "github.com/dujiao-next/internal/modules/wallet/application"
 	"github.com/dujiao-next/internal/platform/database/gormdb"
+	boostpointsgormuow "github.com/dujiao-next/internal/workflows/boostpoints/infrastructure/gormuow" // BOOST-EXT
 	giftcardredeemgormuow "github.com/dujiao-next/internal/workflows/giftcardredeem/infrastructure/gormuow"
 )
 
@@ -136,6 +137,7 @@ func (c *Container) initApplicationServices() {
 	})
 	c.BoostCatalogService = boostapp.NewCatalogService(c.BoostCatalogRepo)                                                            // BOOST-EXT
 	c.BoostStorefrontService = boostapp.NewStorefrontService(c.BoostCatalogRepo, boostmemberrate.New(c.UserStore, c.MemberLevelRepo)) // BOOST-EXT
+	c.BoostPointsService = boostapp.NewPointsService(c.BoostPointsRepo, boostpointsgormuow.New(gormdb.DB, c.Config.App.SecretKey))    // BOOST-EXT
 	c.CouponAdminService = couponapp.NewAdminService(c.CouponRepo)
 	c.PromotionAdminService = promotionapp.NewAdminService(c.PromotionRepo)
 	c.ContentBannerService = contentapp.NewBannerService(
