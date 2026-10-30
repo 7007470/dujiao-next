@@ -55,6 +55,7 @@ func (c *Container) initRepositories() error {
 	c.GiftCardRepo = giftcardgormstore.New(db)
 	c.BoostCatalogRepo = boostgormstore.NewCatalogStore(db) // BOOST-EXT
 	c.BoostPointsRepo = boostgormstore.NewPointsStore(db)   // BOOST-EXT
+	c.BoostTaskRepo = boostgormstore.NewTaskStore(db)       // BOOST-EXT
 	c.FulfillmentStore = fulfillmentgormstore.New(db)
 	c.ProductRepo = productgormstore.NewProductStore(db)
 	c.ProductSKURepo = productgormstore.NewSKUStore(db)

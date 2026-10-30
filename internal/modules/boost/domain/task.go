@@ -6,19 +6,22 @@ import "time"
 // 不变量：结算后 PointsConsumed + PointsReleased = PointsHeld；
 // 同一绑定账号同时只有一个 PROCESSING 任务（部分唯一索引，见 gormstore）。
 type Task struct {
-	ID              uint       `gorm:"primarykey" json:"id"`
-	TaskNo          string     `gorm:"type:varchar(32);not null;uniqueIndex" json:"task_no"`
-	UserID          uint       `gorm:"not null;index;uniqueIndex:idx_boost_tasks_user_idempotency,priority:1" json:"user_id"`
-	BindingID       uint       `gorm:"not null;index" json:"binding_id"`
-	GameID          uint       `gorm:"not null;index:idx_boost_tasks_pull,priority:2" json:"game_id"`
-	FeatureID       uint       `gorm:"not null;index" json:"feature_id"`
-	FeatureVersion  int        `gorm:"not null" json:"feature_version"`
-	SnapshotJSON    string     `gorm:"column:snapshot_json;type:text;not null" json:"snapshot_json"`
-	ParamsJSON      string     `gorm:"column:params_json;type:text;not null" json:"params_json"`
-	PlanJSON        string     `gorm:"column:plan_json;type:text;not null" json:"plan_json"`
-	Summary         string     `gorm:"type:varchar(255)" json:"summary"`
-	Units           int        `gorm:"not null" json:"units"`
-	UnitsDone       int        `gorm:"not null" json:"units_done"`
+	ID             uint   `gorm:"primarykey" json:"id"`
+	TaskNo         string `gorm:"type:varchar(32);not null;uniqueIndex" json:"task_no"`
+	UserID         uint   `gorm:"not null;index;uniqueIndex:idx_boost_tasks_user_idempotency,priority:1" json:"user_id"`
+	BindingID      uint   `gorm:"not null;index" json:"binding_id"`
+	GameID         uint   `gorm:"not null;index:idx_boost_tasks_pull,priority:2" json:"game_id"`
+	FeatureID      uint   `gorm:"not null;index" json:"feature_id"`
+	FeatureVersion int    `gorm:"not null" json:"feature_version"`
+	SnapshotJSON   string `gorm:"column:snapshot_json;type:text;not null" json:"snapshot_json"`
+	ParamsJSON     string `gorm:"column:params_json;type:text;not null" json:"params_json"`
+	PlanJSON       string `gorm:"column:plan_json;type:text;not null" json:"plan_json"`
+	Summary        string `gorm:"type:varchar(255)" json:"summary"`
+	Units          int    `gorm:"not null" json:"units"`
+	UnitsDone      int    `gorm:"not null" json:"units_done"` // = 各步骤完成数之和
+	// StepsDoneJSON 每个步骤的完成数，与 plan_json.steps 一一对应，例如 [10,8]。执行端按步骤上报，结算按它算。
+	// 为空表示旧任务（S5 初版只记总数），按步骤顺序从 UnitsDone 推导。
+	StepsDoneJSON   string     `gorm:"column:steps_done_json;type:text" json:"steps_done_json"`
 	PointsHeld      int64      `gorm:"not null" json:"points_held"`
 	PointsConsumed  int64      `gorm:"not null" json:"points_consumed"`
 	PointsReleased  int64      `gorm:"not null" json:"points_released"`

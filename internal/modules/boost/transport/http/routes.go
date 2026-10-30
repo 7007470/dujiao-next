@@ -82,3 +82,36 @@ func RegisterPointsAdminRoutes(authorized gin.IRoutes, handler *PointsHandler) {
 	authorized.POST("/boost/points/deduct", handler.Deduct)
 	authorized.POST("/boost/points/revoke-order", handler.RevokeOrder)
 }
+
+// RegisterTaskUserRoutes 用户端登录后：游戏账号绑定、代练任务。
+func RegisterTaskUserRoutes(user gin.IRoutes, handler *TaskHandler) {
+	if user == nil || handler == nil {
+		panic("boost task user routes: required dependency is nil")
+	}
+	user.GET("/boost/bindings", handler.MyBindings)
+	user.POST("/boost/bindings", handler.CreateBinding)
+	user.DELETE("/boost/bindings/:id", handler.DeleteBinding)
+	user.POST("/boost/bindings/:id/input", handler.BindingInput)
+	user.POST("/boost/bindings/:id/confirm", handler.BindingConfirm)
+
+	user.GET("/boost/tasks", handler.MyTasks)
+	user.POST("/boost/tasks", handler.CreateTask)
+	user.GET("/boost/tasks/:task_no", handler.MyTask)
+	user.POST("/boost/tasks/:task_no/cancel", handler.CancelMyTask)
+	user.POST("/boost/tasks/:task_no/input", handler.TaskInput)
+}
+
+// RegisterTaskAdminRoutes 后台代练任务 / 绑定 / 开发用模拟执行端（字面量路径，见 RegisterAdminRoutes 注释）。
+func RegisterTaskAdminRoutes(authorized gin.IRoutes, handler *TaskHandler) {
+	if authorized == nil || handler == nil {
+		panic("boost task admin routes: required dependency is nil")
+	}
+	authorized.GET("/boost/tasks", handler.AdminTasks)
+	authorized.GET("/boost/tasks/:task_no", handler.AdminTask)
+	authorized.POST("/boost/tasks/:task_no/cancel", handler.AdminCancelTask)
+	authorized.GET("/boost/bindings", handler.AdminBindings)
+
+	authorized.GET("/boost/simulator", handler.SimulatorQueue)
+	authorized.POST("/boost/simulator", handler.SimulatorAct)
+	authorized.POST("/boost/simulator/reap", handler.SimulatorReap)
+}

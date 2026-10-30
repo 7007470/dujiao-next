@@ -578,6 +578,45 @@ func PointsForUnits(plan Plan, unitsDone int64) int64 {
 	return points
 }
 
+// PointsForSteps 按每个步骤各自的完成数结算（执行端按步骤上报，不依赖执行顺序）：
+// 原价 = 固定部分 + Σ 完成数 × 单价，再按下单时的折扣率打折（向下取整），不超过 Total；
+// 一步都没做时为 0（固定部分只在开始执行后收）；全部完成时等于 Total。
+// done 与 plan.Steps 一一对应，超出计划的部分按计划数计。
+func PointsForSteps(plan Plan, done []int64) int64 {
+	var any, all = false, true
+	raw := plan.FixedPoints
+	for i, s := range plan.Steps {
+		var d int64
+		if i < len(done) {
+			d = done[i]
+		}
+		if d < 0 {
+			d = 0
+		}
+		if d > s.Count {
+			d = s.Count
+		}
+		if d > 0 {
+			any = true
+		}
+		if d < s.Count {
+			all = false
+		}
+		raw += d * s.UnitPoints
+	}
+	if !any {
+		return 0
+	}
+	if all {
+		return plan.Total
+	}
+	points := ApplyRate(raw, plan.Rate)
+	if points > plan.Total {
+		return plan.Total
+	}
+	return points
+}
+
 // StepProgress 返回每个步骤的完成数，供进度展示。
 func StepProgress(plan Plan, unitsDone int64) []Step {
 	left := unitsDone

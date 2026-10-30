@@ -189,3 +189,14 @@ web:
   # 强烈建议改成不易猜测的字符串以降低自动化扫描风险
   # 例如: "/dj-mgmt-7x9k2" 或 "/console-private"
   admin_path: "/admin"
+
+# BOOST-EXT: 代练模块
+boost:
+  # 游戏账号凭据加密密钥（AES-256-GCM），版本号: 密钥。为空时用户不能绑定游戏账号。
+  # 每个密钥至少 32 个字符，必须和 app.secret_key 不同（openssl rand -hex 32）。
+  # 轮换：新增一个版本并把 credential_key_version 指向它；旧版本保留，旧密文仍可解密。
+  credential_keys: {}
+  #   "1": replace-with-openssl-rand-hex-32
+  credential_key_version: 1
+  # 开发用模拟执行端：后台"代练任务"页可以手动让绑定验证成功 / 失败、任务完成 / 失败。生产必须关闭。
+  dev_simulator: false

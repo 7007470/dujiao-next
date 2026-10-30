@@ -72,6 +72,7 @@ func registerStorefrontRoutes(
 	affiliateHandler := affiliatebootstrap.NewStorefrontHandler(c)
 	boostStorefrontHandler := boosttransport.NewStorefrontHandler(c.BoostStorefrontService) // BOOST-EXT
 	boostPointsHandler := boosttransport.NewPointsHandler(c.BoostPointsService, nil)        // BOOST-EXT
+	boostTaskHandler := boosttransport.NewTaskHandler(c.BoostTaskService, nil, false)       // BOOST-EXT
 
 	// 公开接口
 	public := storefront.Group("/public")
@@ -148,6 +149,7 @@ func registerStorefrontRoutes(
 		affiliatetransport.RegisterUserRoutes(user, affiliateHandler)
 		boosttransport.RegisterUserRoutes(user, boostStorefrontHandler)   // BOOST-EXT
 		boosttransport.RegisterPointsUserRoutes(user, boostPointsHandler) // BOOST-EXT
+		boosttransport.RegisterTaskUserRoutes(user, boostTaskHandler)     // BOOST-EXT
 
 		resellerConsole := user.Group("/reseller")
 		resellerConsole.Use(middleware.RequireMainTenantForResellerConsole())

@@ -93,7 +93,7 @@ boost_task
   feature_version, snapshot_json       -- 名称、capability、refund_policy、timeout、折扣率
   params_json                          -- compile 后的规范化参数
   plan_json                            -- steps / fixed / fixed_points / raw_total / total / rate
-  summary, units, units_done
+  summary, units, units_done, steps_done_json   -- steps_done_json 每一步完成数；units_done = 之和
   points_held, points_consumed, points_released
   status, cancel_requested, progress_percent, progress_text, result_json, error_code
   attempt, max_attempts, available_at, deadline_at
@@ -138,7 +138,7 @@ Nonce 防重放存 Redis（`SETNX`，120 秒）。
 ### 3.2 结算
 
 ```text
-已完成部分 = pointsForUnits(plan, units_done)      -- 见 boost-feature-schema.md §5
+已完成部分 = pointsForSteps(plan, steps_done)     -- 每一步完成数 × 单价，见 boost-feature-schema.md §5
 成功 / 取消：消耗 = 已完成部分
 失败：按 refund_policy 和错误码分类
 退回 = 冻结 − 消耗；按冻结时批次的逆序退回；批次已过期则退回即失效（写 expire 流水）
@@ -178,13 +178,13 @@ X-Worker-Signature:  hex(HMAC-SHA256(secret, "{METHOD}\n{PATH}\n{TS}\n{md5(body)
 
 | 方法 | 路径 | 请求 | 响应 |
 |---|---|---|---|
-| POST | `/pull` | `{kinds:["task","bind"], max}` | `{items:[{kind, id, lease_token, lease_expires_at, attempt, game, credential, session_ref, input, task_no, feature, feature_version, params, steps, units, units_done}]}` |
-| POST | `/leases/{token}/heartbeat` | `{units_done, progress_percent?, progress_text?}` | `{lease_expires_at, cancel_requested}` |
+| POST | `/pull` | `{kinds:["task","bind"], max}` | `{items:[{kind, id, lease_token, lease_expires_at, attempt, game, credential, session_ref, input, task_no, feature, feature_version, params, steps, units, steps_done:[{seq, done}]}]}` |
+| POST | `/leases/{token}/heartbeat` | `{steps:[{seq, done}], progress_percent?, progress_text?}` | `{lease_expires_at, cancel_requested}` |
 | POST | `/leases/{token}/events` | `{seq, type, message}` | `{ok}`（seq 去重） |
 | POST | `/leases/{token}/need-input` | `{kind, prompt}` | `{input_id, status, expires_at}`（释放租约） |
-| POST | `/leases/{token}/finish` | `{request_id, units_done, result?, session_ref?}` | `{status}` |
-| POST | `/leases/{token}/fail` | `{request_id, error_code, units_done, message?}` | `{status, points_consumed, points_released}` |
-| POST | `/leases/{token}/cancel-ack` | `{request_id, units_done}` | `{status, points_consumed, points_released}` |
+| POST | `/leases/{token}/finish` | `{request_id, steps?:[{seq, done}], result?, session_ref?}`（不带 steps = 全部完成） | `{status}` |
+| POST | `/leases/{token}/fail` | `{request_id, error_code, steps:[{seq, done}], message?}` | `{status, points_consumed, points_released}` |
+| POST | `/leases/{token}/cancel-ack` | `{request_id, steps:[{seq, done}]}` | `{status, points_consumed, points_released}` |
 
 领取规则：按 `created_at` 先进先出；能力匹配（游戏 code + 功能 capability，绑定用 `bind`）；同一绑定账号已有执行中任务时跳过；受 `max_concurrency` 限制。PostgreSQL 用 `FOR UPDATE SKIP LOCKED`，其它数据库用"按 id 条件更新 + 检查影响行数"。
 

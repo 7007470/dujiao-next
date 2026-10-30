@@ -160,7 +160,8 @@ func registerAdminRoutes(
 
 	// BOOST-EXT: 代练后台（游戏 / 区服 / 功能），写操作记入权限审计日志
 	boosttransport.RegisterAdminRoutes(authorized, boosttransport.NewAdminHandler(c.BoostCatalogService, c.AuthzAuditService))
-	boosttransport.RegisterPointsAdminRoutes(authorized, boosttransport.NewPointsHandler(c.BoostPointsService, c.AuthzAuditService)) // BOOST-EXT: 积分
+	boosttransport.RegisterPointsAdminRoutes(authorized, boosttransport.NewPointsHandler(c.BoostPointsService, c.AuthzAuditService))                        // BOOST-EXT: 积分
+	boosttransport.RegisterTaskAdminRoutes(authorized, boosttransport.NewTaskHandler(c.BoostTaskService, c.AuthzAuditService, c.Config.Boost.DevSimulator)) // BOOST-EXT: 任务 / 绑定
 
 	// 优惠券与活动价
 	coupontransport.RegisterAdminRoutes(authorized, adminCouponHandler)

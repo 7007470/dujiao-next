@@ -33,6 +33,7 @@ type Config struct {
 	Captcha      CaptchaConfig      `mapstructure:"captcha"`
 	Web          WebConfig          `mapstructure:"web"`
 	Reseller     ResellerConfig     `mapstructure:"reseller"`
+	Boost        BoostConfig        `mapstructure:"boost"` // BOOST-EXT
 }
 
 // AppConfig 应用级配置
@@ -291,6 +292,16 @@ type WebConfig struct {
 	AdminPath string `mapstructure:"admin_path"`
 }
 
+// BoostConfig 代练模块配置（BOOST-EXT）。
+type BoostConfig struct {
+	// CredentialKeys 游戏账号凭据加密密钥，版本号 → 密钥（每个至少 32 字符，与 app.secret_key 不同）。
+	// 为空时不能绑定游戏账号。轮换：新增一个版本并把 CredentialKeyVersion 指向它，旧版本保留到旧密文全部失效。
+	CredentialKeys       map[string]string `mapstructure:"credential_keys"`
+	CredentialKeyVersion int               `mapstructure:"credential_key_version"`
+	// DevSimulator 开发用模拟执行端（后台手动推进绑定 / 任务）。生产必须关闭；S6 Worker 接口上线后移除。
+	DevSimulator bool `mapstructure:"dev_simulator"`
+}
+
 // ResellerConfig 分销商模式配置。
 type ResellerConfig struct {
 	Enabled              bool     `mapstructure:"enabled"`
@@ -428,6 +439,7 @@ func Load() *Config {
 	viper.SetDefault("reseller.subdomain_base", "")
 	viper.SetDefault("reseller.self_apply_enabled", true)
 	viper.SetDefault("reseller.settlement_confirm_days", 7)
+	viper.SetDefault("boost.dev_simulator", false) // BOOST-EXT
 
 	// 环境变量支持
 	viper.AutomaticEnv()                                   // 自动读取环境变量

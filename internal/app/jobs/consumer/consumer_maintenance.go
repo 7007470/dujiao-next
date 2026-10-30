@@ -70,7 +70,7 @@ func (c *Consumer) handleResellerConfirmLedger(_ context.Context, _ *asynq.Task)
 	return nil
 }
 
-// handleBoostPointsMaintain BOOST-EXT：积分批次到期失效；补发支付成功但没到账的积分包订单。
+// handleBoostPointsMaintain BOOST-EXT：积分批次到期失效；补发支付成功但没到账的积分包订单；代练任务 / 绑定超时回收。
 func (c *Consumer) handleBoostPointsMaintain(_ context.Context, _ *asynq.Task) error {
 	if c == nil || c.BoostPointsService == nil {
 		return nil
@@ -83,13 +83,25 @@ func (c *Consumer) handleBoostPointsMaintain(_ context.Context, _ *asynq.Task) e
 	if grantErr != nil {
 		logger.Warnw("worker_boost_points_retry_grant_failed", "error", grantErr)
 	}
-	if expired > 0 || granted > 0 {
-		logger.Infow("worker_boost_points_maintain_ok", "expired_lots", expired, "granted_orders", granted)
+	reaped := 0
+	var reapErr error
+	if c.BoostTaskService != nil {
+		// 代练任务 / 绑定：等待输入超时、任务超过时限
+		reaped, reapErr = c.BoostTaskService.Reap(200)
+		if reapErr != nil {
+			logger.Warnw("worker_boost_task_reap_failed", "error", reapErr)
+		}
+	}
+	if expired > 0 || granted > 0 || reaped > 0 {
+		logger.Infow("worker_boost_points_maintain_ok", "expired_lots", expired, "granted_orders", granted, "reaped", reaped)
 	}
 	if err != nil {
 		return err
 	}
-	return grantErr
+	if grantErr != nil {
+		return grantErr
+	}
+	return reapErr
 }
 
 // handleReconciliationRun 处理对账任务执行。

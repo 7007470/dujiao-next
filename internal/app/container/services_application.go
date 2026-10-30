@@ -2,10 +2,13 @@ package container
 
 import (
 	"context"
+	"strings" // BOOST-EXT
 
 	adproxyapp "github.com/dujiao-next/internal/modules/adproxy/application"
 	adproxygateway "github.com/dujiao-next/internal/modules/adproxy/infrastructure/adgateway"
 	boostapp "github.com/dujiao-next/internal/modules/boost/application"                      // BOOST-EXT
+	boostcontract "github.com/dujiao-next/internal/modules/boost/contract"                    // BOOST-EXT
+	boostcredential "github.com/dujiao-next/internal/modules/boost/infrastructure/credential" // BOOST-EXT
 	boostmemberrate "github.com/dujiao-next/internal/modules/boost/infrastructure/memberrate" // BOOST-EXT
 	categoryapp "github.com/dujiao-next/internal/modules/catalog/category/application"
 
@@ -138,10 +141,37 @@ func (c *Container) initApplicationServices() {
 	c.BoostCatalogService = boostapp.NewCatalogService(c.BoostCatalogRepo)                                                            // BOOST-EXT
 	c.BoostStorefrontService = boostapp.NewStorefrontService(c.BoostCatalogRepo, boostmemberrate.New(c.UserStore, c.MemberLevelRepo)) // BOOST-EXT
 	c.BoostPointsService = boostapp.NewPointsService(c.BoostPointsRepo, boostpointsgormuow.New(gormdb.DB, c.Config.App.SecretKey))    // BOOST-EXT
+	c.initBoostTaskService()                                                                                                          // BOOST-EXT
 	c.CouponAdminService = couponapp.NewAdminService(c.CouponRepo)
 	c.PromotionAdminService = promotionapp.NewAdminService(c.PromotionRepo)
 	c.ContentBannerService = contentapp.NewBannerService(
 		gormstore.NewBannerStore(gormdb.DB),
 		contentapp.SystemClock{},
 	)
+}
+
+// initBoostTaskService BOOST-EXT：游戏账号绑定和代练任务。没配凭据密钥时绑定不可用，其余照常；密钥配错直接拒绝启动。
+func (c *Container) initBoostTaskService() {
+	sealer, err := boostcredential.FromConfig(c.Config.Boost.CredentialKeys, c.Config.Boost.CredentialKeyVersion)
+	if err != nil {
+		logger.Errorw("provider_init_boost_credential_failed", "error", err)
+		panic(err)
+	}
+	for version, key := range c.Config.Boost.CredentialKeys {
+		if strings.TrimSpace(key) == strings.TrimSpace(c.Config.App.SecretKey) {
+			logger.Errorw("provider_init_boost_credential_failed", "error", "credential key equals app.secret_key", "version", version)
+			panic("boost.credential_keys 不能和 app.secret_key 相同")
+		}
+	}
+	var sealerPort boostcontract.CredentialSealer
+	if sealer != nil {
+		sealerPort = sealer
+	} else {
+		logger.Warnw("boost_credential_keys_missing", "hint", "boost.credential_keys 未配置，用户不能绑定游戏账号")
+	}
+	if c.Config.Boost.DevSimulator {
+		logger.Warnw("boost_dev_simulator_enabled", "hint", "开发用模拟执行端已开启，生产必须关闭")
+	}
+	rates := boostmemberrate.New(c.UserStore, c.MemberLevelRepo)
+	c.BoostTaskService = boostapp.NewTaskService(c.BoostTaskRepo, c.BoostPointsService, rates, sealerPort)
 }

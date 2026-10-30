@@ -102,6 +102,7 @@ type Container struct {
 	GiftCardRepo           *giftcardgormstore.Store
 	BoostCatalogRepo       *boostgormstore.CatalogStore // BOOST-EXT
 	BoostPointsRepo        *boostgormstore.PointsStore  // BOOST-EXT
+	BoostTaskRepo          *boostgormstore.TaskStore    // BOOST-EXT
 	FulfillmentStore       fulfillmentcontract.Store
 	ProductRepo            *productgormstore.ProductStore
 	ProductSKURepo         *productgormstore.SKUStore
@@ -168,6 +169,7 @@ type Container struct {
 	BoostCatalogService           *boostapp.CatalogService    // BOOST-EXT
 	BoostStorefrontService        *boostapp.StorefrontService // BOOST-EXT
 	BoostPointsService            *boostapp.PointsService     // BOOST-EXT
+	BoostTaskService              *boostapp.TaskService       // BOOST-EXT
 	UserLoginLogService           *auditlogapp.UserLoginService
 	AuthzAuditService             *auditlogapp.AuthzService
 	AdminLoginLogService          *auditlogapp.AdminLoginService

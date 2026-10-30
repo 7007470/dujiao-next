@@ -124,6 +124,10 @@ func (v *publicProductView) skuStockState(sv publicSKUView) (string, int64) {
 	if fulfillmentType == "" {
 		fulfillmentType = constants.FulfillmentTypeManual
 	}
+	// BOOST-EXT: 积分包不占库存，SKU 也始终可售（和商品级 decorateProductStock 一致）
+	if fulfillmentType == constants.FulfillmentTypeBoostPoints {
+		return constants.ProductStockStatusUnlimited, int64(constants.ManualStockUnlimited)
+	}
 	quantity := domaincatalog.StockQuantity(fulfillmentType, sv.AutoStockAvailable, sv.ManualStockTotal)
 	status := domaincatalog.StorefrontStockPolicy().Status(quantity)
 	return status, quantity

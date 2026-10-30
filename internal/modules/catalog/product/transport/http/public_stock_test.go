@@ -156,3 +156,22 @@ func TestPublicProductResponseRangeModeReturnsBucketOnly(t *testing.T) {
 		t.Fatalf("expected sku manual stock to be masked, got exact value %d", sku.ManualStockTotal)
 	}
 }
+
+// BOOST-EXT: 积分包商品的 SKU 没有库存配置（manual_stock_total=0），商品和 SKU 都必须显示为不限库存、可售。
+func TestPublicProductBoostPointsSKUIsUnlimited(t *testing.T) {
+	h := &PublicHandler{}
+	product := &productdomain.Product{
+		ID:              1,
+		FulfillmentType: constants.FulfillmentTypeBoostPoints,
+		SKUs:            []productdomain.ProductSKU{{ID: 11, SKUCode: productdomain.DefaultSKUCode, IsActive: true}},
+	}
+	item := publicProductView{Product: *product, PublicSKUs: []publicSKUView{{ProductSKU: productdomain.ProductSKU{ID: 11, SKUCode: productdomain.DefaultSKUCode, IsActive: true}}}}
+	h.decorateProductStock(product, &item)
+	if item.IsSoldOut || item.StockStatus != constants.ProductStockStatusUnlimited {
+		t.Fatalf("product stock = %s sold_out=%v", item.StockStatus, item.IsSoldOut)
+	}
+	resp := item.toProductResp()
+	if len(resp.SKUs) != 1 || resp.SKUs[0].IsSoldOut || resp.SKUs[0].StockStatus != constants.ProductStockStatusUnlimited {
+		t.Fatalf("sku = %+v", resp.SKUs)
+	}
+}
