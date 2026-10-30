@@ -281,6 +281,18 @@ const router = createRouter({
             meta: { requiresUserAuth: true }
         },
         {
+            path: '/boost/accounts',
+            name: 'boost-accounts',
+            component: () => import('../views/BoostAccounts.vue'),
+            meta: { requiresUserAuth: true }
+        },
+        {
+            path: '/boost/tasks/:taskNo?',
+            name: 'boost-tasks',
+            component: () => import('../views/BoostTasks.vue'),
+            meta: { requiresUserAuth: true }
+        },
+        {
             path: '/boost/:code',
             name: 'boost-game',
             component: () => import('../views/BoostGameDetail.vue'),

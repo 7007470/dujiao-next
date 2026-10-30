@@ -203,6 +203,7 @@ const purchaseTypeBadgeClass = (product: AdminProduct) => {
 }
 
 const fulfillmentTypeBadgeClass = (product: AdminProduct) => {
+  if (product?.fulfillment_type === 'boost_points') return 'border-teal-200 bg-teal-50 text-teal-700' // BOOST-EXT
   return product?.fulfillment_type === 'auto'
     ? 'border-violet-200 bg-violet-50 text-violet-700'
     : 'border-amber-200 bg-amber-50 text-amber-700'
@@ -647,7 +648,7 @@ watch(
                       {{ product.purchase_type === 'guest' ? t('admin.products.purchaseType.guest') : t('admin.products.purchaseType.member') }}
                     </span>
                     <span class="rounded-full border px-2 py-0.5 text-[11px]" :class="fulfillmentTypeBadgeClass(product)">
-                      {{ product.fulfillment_type === 'auto' ? t('admin.products.fulfillmentType.auto') : t('admin.products.fulfillmentType.manual') }}
+                      {{ product.fulfillment_type === 'auto' ? t('admin.products.fulfillmentType.auto') : product.fulfillment_type === 'boost_points' ? t('admin.products.fulfillmentType.boost_points') : t('admin.products.fulfillmentType.manual') }}
                     </span>
                     <span
                       v-if="product.is_mapped"

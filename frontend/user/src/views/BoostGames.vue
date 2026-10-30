@@ -4,6 +4,12 @@
       <div class="mb-12 mt-12 text-center">
         <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight text-foreground">{{ t('boost.title') }}</h1>
         <p class="text-muted-foreground max-w-2xl mx-auto text-lg border-b pb-8">{{ t('boost.subtitle') }}</p>
+        <!-- BOOST-EXT S5: 登录用户的入口 -->
+        <nav v-if="userAuthStore.isAuthenticated" class="mt-6 flex flex-wrap justify-center gap-2 text-sm">
+          <router-link to="/boost/tasks" class="rounded-full border bg-card px-4 py-1.5 hover:bg-secondary">{{ t('boost.myTasks') }}</router-link>
+          <router-link to="/boost/accounts" class="rounded-full border bg-card px-4 py-1.5 hover:bg-secondary">{{ t('boost.myAccounts') }}</router-link>
+          <router-link to="/boost/points" class="rounded-full border bg-card px-4 py-1.5 hover:bg-secondary">{{ t('boost.pointsTitle') }}</router-link>
+        </nav>
       </div>
 
       <div v-if="loading" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -46,8 +52,10 @@ import EmptyState from '../components/EmptyState.vue'
 import { getImageUrl } from '../utils/image'
 import { usePageSeo } from '../composables/usePageSeo'
 import { boostAPI, type BoostGame } from '../api/boost'
+import { useUserAuthStore } from '../stores/userAuth'
 
 const { t } = useI18n()
+const userAuthStore = useUserAuthStore()
 usePageSeo({ title: () => t('boost.title'), canonicalPath: () => '/boost' })
 
 const games = ref<BoostGame[]>([])

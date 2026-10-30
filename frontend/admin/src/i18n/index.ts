@@ -669,6 +669,7 @@ const messages = {
       navItems: {
         boostGames: '代练游戏', // BOOST-EXT
         boostPoints: '代练积分', // BOOST-EXT
+        boostTasks: '代练任务', // BOOST-EXT
         dashboard: '仪表盘',
         productCategories: '商品分类',
         productList: '商品列表',
@@ -1625,6 +1626,7 @@ const messages = {
           manualStockTotalPlaceholder: '0 或 -1',
           manualStockTotalTip: '仅人工交付生效，-1 表示无限库存，0 及以上表示有限库存',
           manualStockTotalSkuTip: '已启用 SKU 配置，库存由启用中的 SKU 自动汇总',
+          boostPointsStockTip: '代练积分商品不占库存，始终可售；每个 SKU 卖多少积分在「代练管理 → 代练积分 → 积分包」里配置', // BOOST-EXT
           skuTitle: 'SKU 规格配置',
           skuTip: '支持多规格定价与库存。至少保留一个启用中的 SKU。',
           skuAdd: '新增 SKU',
@@ -5120,6 +5122,7 @@ const messages = {
       navItems: {
         boostGames: '代練遊戲', // BOOST-EXT
         boostPoints: '代練積分', // BOOST-EXT
+        boostTasks: '代練任務', // BOOST-EXT
         dashboard: '儀表板',
         productCategories: '商品分類',
         productList: '商品列表',
@@ -6076,6 +6079,7 @@ const messages = {
           manualStockTotalPlaceholder: '0 或 -1',
           manualStockTotalTip: '僅人工交付生效，-1 表示無限庫存，0 及以上表示有限庫存',
           manualStockTotalSkuTip: '已啟用 SKU 設定，庫存將由啟用中的 SKU 自動彙總',
+          boostPointsStockTip: '代練積分商品不佔庫存，始終可售；每個 SKU 賣多少積分在「代練管理 → 代練積分 → 積分包」裡設定', // BOOST-EXT
           skuTitle: 'SKU 規格設定',
           skuTip: '支援多規格定價與庫存，至少保留一個啟用中的 SKU。',
           skuAdd: '新增 SKU',
@@ -9571,6 +9575,7 @@ const messages = {
       navItems: {
         boostGames: 'Boost Games', // BOOST-EXT
         boostPoints: 'Boost Points', // BOOST-EXT
+        boostTasks: 'Boost Tasks', // BOOST-EXT
         dashboard: 'Dashboard',
         productCategories: 'Product Categories',
         productList: 'Product List',
@@ -10527,6 +10532,7 @@ const messages = {
           manualStockTotalPlaceholder: '0 or -1',
           manualStockTotalTip: 'Only for manual delivery: -1 means unlimited stock, 0+ means finite stock',
           manualStockTotalSkuTip: 'SKU mode is enabled, stock is aggregated from active SKUs automatically',
+          boostPointsStockTip: 'Boost point products have no stock and are always available. Set how many points each SKU grants under Boosting → Boost Points → Point packs', // BOOST-EXT
           skuTitle: 'SKU configuration',
           skuTip: 'Supports multi-SKU pricing and stock. Keep at least one active SKU.',
           skuAdd: 'Add SKU',

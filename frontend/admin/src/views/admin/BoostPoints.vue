@@ -148,18 +148,22 @@ const loadPacks = async () => {
   }
 }
 
-const usedSkuIds = computed(() => new Set(packs.value.map((p) => p.sku_id)))
+// 每个 SKU 只能配一个积分包：已配过的 SKU 仍然列出来但不可选，并标明是哪个积分包，
+// 避免"商品明明是代练积分类型却选不到"的误解。
+const packBySku = computed(() => new Map(packs.value.map((p) => [p.sku_id, p])))
 const skuOptions = computed(() => {
-  const out: { id: number; label: string }[] = []
+  const out: { id: number; label: string; usedBy?: BoostPointPack }[] = []
   for (const p of pointsProducts.value) {
     const title = (p.title as any)?.['zh-CN'] || p.slug
     for (const sku of p.skus || []) {
-      if (usedSkuIds.value.has(sku.id)) continue
-      out.push({ id: sku.id, label: `${title} / ${sku.sku_code}（¥${Number(sku.price_amount).toFixed(2)}）` })
+      const usedBy = packBySku.value.get(sku.id)
+      const base = `${title} / ${sku.sku_code}（¥${Number(sku.price_amount).toFixed(2)}）`
+      out.push({ id: sku.id, label: usedBy ? `${base} — 已用于积分包「${usedBy.name}」` : base, usedBy })
     }
   }
   return out
 })
+const freeSkuCount = computed(() => skuOptions.value.filter((o) => !o.usedBy).length)
 
 const openPack = async (p?: BoostPointPack) => {
   packError.value = ''
@@ -586,9 +590,12 @@ onMounted(() => loadAccounts())
             <label class="text-xs font-medium text-muted-foreground" for="bp-pack-sku">商品 SKU（交付类型为「代练积分」的商品）</label>
             <select id="bp-pack-sku" v-model.number="packForm.sku_id" class="h-9 w-full rounded-md border border-input bg-background px-2 text-sm">
               <option :value="0" disabled>请选择</option>
-              <option v-for="o in skuOptions" :key="o.id" :value="o.id">{{ o.label }}</option>
+              <option v-for="o in skuOptions" :key="o.id" :value="o.id" :disabled="!!o.usedBy">{{ o.label }}</option>
             </select>
-            <p v-if="!skuOptions.length" class="text-xs text-amber-600">没有可用的 SKU。请先在「商品管理」新建交付类型为「代练积分」的商品。</p>
+            <p v-if="!skuOptions.length" class="text-xs text-amber-600">没有交付类型为「代练积分」的商品。请先在「商品管理」新建商品，交付方式选「代练积分」。</p>
+            <p v-else-if="!freeSkuCount" class="text-xs text-amber-600">
+              「代练积分」商品的 SKU 都已经配了积分包（每个 SKU 只能对应一个积分包）。要新增一档，请在「商品管理」给该商品再加一个 SKU（例如 1000 / 3000 / 10000 积分各一个 SKU、各自定价），或新建一个商品；要改现有这档的积分数，直接点列表里的「编辑」。
+            </p>
           </div>
           <div class="space-y-1">
             <label class="text-xs font-medium text-muted-foreground" for="bp-pack-name">名称（可留空，默认"N 积分"）</label>

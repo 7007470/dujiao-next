@@ -47,6 +47,7 @@ import {
   ImageIcon,
   Gamepad2,
   Coins,
+  ListChecks,
 } from 'lucide-vue-next'
 import { Menu } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
@@ -312,6 +313,12 @@ const navGroups = computed<NavGroup[]>(() => {
           to: '/boost/points',
           icon: Coins,
           permission: 'GET:/admin/boost/point-accounts',
+        },
+        {
+          label: t('admin.navItems.boostTasks'),
+          to: '/boost/tasks',
+          icon: ListChecks,
+          permission: 'GET:/admin/boost/tasks',
         },
       ],
     },

@@ -847,7 +847,12 @@ watch(
             <p v-if="editingIsMapped" class="mt-1 text-xs text-indigo-600">{{ t('admin.products.mappedFulfillmentLocked') }}</p>
           </div>
 
-          <div class="col-span-1">
+          <!-- BOOST-EXT: 积分包不占库存，始终可售，不显示库存输入 -->
+          <div v-if="form.fulfillment_type === 'boost_points'" class="col-span-1">
+            <label class="block text-xs font-medium text-muted-foreground mb-1.5">{{ t('admin.products.form.manualStockTotal') }}</label>
+            <p class="rounded-md border border-dashed border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">{{ t('admin.products.form.boostPointsStockTip') }}</p>
+          </div>
+          <div v-else class="col-span-1">
             <label class="block text-xs font-medium text-muted-foreground mb-1.5">{{ t('admin.products.form.manualStockTotal') }}</label>
             <Input
               v-model.number="form.manual_stock_total"

@@ -74,6 +74,12 @@ const routes = [
         meta: { permission: 'GET:/admin/boost/point-accounts' },
       },
       {
+        path: 'boost/tasks',
+        name: 'boost-tasks',
+        component: () => import('@/views/admin/BoostTasks.vue'),
+        meta: { permission: 'GET:/admin/boost/tasks' },
+      },
+      {
         path: 'gift-cards',
         name: 'gift-cards',
         component: () => import('@/views/admin/GiftCards.vue'),

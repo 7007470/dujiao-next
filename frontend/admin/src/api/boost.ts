@@ -319,3 +319,167 @@ export const ledgerTypeText: Record<BoostLedgerType, string> = {
   revoke: '撤回',
   admin_adjust: '扣减',
 }
+
+// ---- 绑定与任务（S5）----
+
+export type BoostBindingStatus = 'PENDING' | 'PROCESSING' | 'WAIT_INPUT' | 'WAIT_USER' | 'SUCCESS' | 'FAIL' | 'CANCELLED'
+export type BoostTaskStatus = 'PENDING' | 'PROCESSING' | 'WAIT_INPUT' | 'SUCCESS' | 'FAIL' | 'CANCELLED'
+
+export interface BoostInputView {
+  id: number
+  kind: string
+  prompt: string
+  status: string
+  expires_at: string
+}
+
+export interface BoostBinding {
+  id: number
+  user_id: number
+  game_id: number
+  server_id: number
+  display_name: string
+  login_masked: string
+  status: BoostBindingStatus
+  attempt: number
+  max_attempts: number
+  last_error_code: string
+  user_message: string
+  verified_at?: string
+  created_at: string
+  game_name: string
+  game_code: string
+  server_name: string
+  user_email?: string
+  input?: BoostInputView | null
+}
+
+export interface BoostTask {
+  id: number
+  steps_done_json?: string
+  plan_json?: string
+  task_no: string
+  user_id: number
+  binding_id: number
+  game_id: number
+  feature_id: number
+  feature_version: number
+  summary: string
+  units: number
+  units_done: number
+  points_held: number
+  points_consumed: number
+  points_released: number
+  status: BoostTaskStatus
+  cancel_requested: boolean
+  progress_percent: number
+  progress_text: string
+  error_code: string
+  attempt: number
+  max_attempts: number
+  deadline_at?: string
+  started_at?: string
+  finished_at?: string
+  created_at: string
+  game_name: string
+  game_code: string
+  binding_name: string
+  login_masked: string
+  user_email?: string
+}
+
+export interface BoostTaskEvent {
+  id: number
+  seq: number
+  type: string
+  message: string
+  created_at: string
+}
+
+export interface BoostSettlement {
+  lines: { seq: number; label: string; count: number; done: number; unit_points: number; points: number }[]
+  fixed_points: number
+  fixed_charged: boolean
+  raw_points: number
+  rate: number
+  by_units: number
+  held: number
+  consumed: number
+  released: number
+  final: boolean
+  rule: string
+}
+
+export interface BoostTaskDetail {
+  task: BoostTask
+  snapshot: { code: string; name: string; version: number; refund_policy: string; timeout_minutes: number; rate: number }
+  steps: { seq: number; label: string; count: number; done: number; unit_points: number }[]
+  breakdown: { label: string; detail: string; points: number }[]
+  settlement?: BoostSettlement // 旧版后端没有这个字段
+  events: BoostTaskEvent[]
+  input: BoostInputView | null
+}
+
+export interface BoostSimulatorQueue {
+  enabled: boolean
+  error_codes: string[]
+  tasks?: BoostTask[]
+  bindings?: BoostBinding[]
+}
+
+export type BoostSimAction = 'start' | 'progress' | 'need_input' | 'finish' | 'fail' | 'cancel_ack'
+
+export interface BoostSimRequest {
+  kind: 'binding' | 'task'
+  id: number
+  action: BoostSimAction
+  steps?: { seq: number; done: number }[]
+  error_code?: string
+  input_kind?: string
+  prompt?: string
+  message?: string
+}
+
+export const boostTaskAPI = {
+  listTasks: (params: { status?: string; task_no?: string; user_id?: number; game_id?: number; page?: number; page_size?: number }) =>
+    api.get('/admin/boost/tasks', { params }).then(unwrapPage<BoostTask>),
+  getTask: (taskNo: string) =>
+    api.get(`/admin/boost/tasks/${encodeURIComponent(taskNo)}`).then(unwrap<{ detail: BoostTaskDetail; simulator: boolean }>),
+  cancelTask: (taskNo: string) =>
+    api.post(`/admin/boost/tasks/${encodeURIComponent(taskNo)}/cancel`).then(unwrap<{ status: string; cancel_requested: boolean; points_consumed: number; points_released: number }>),
+  listBindings: (params: { status?: string; user_id?: number; game_id?: number; include_deleted?: string; page?: number; page_size?: number }) =>
+    api.get('/admin/boost/bindings', { params }).then(unwrapPage<BoostBinding>),
+  simulatorQueue: () => api.get('/admin/boost/simulator').then(unwrap<BoostSimulatorQueue>),
+  simulate: (data: BoostSimRequest) => api.post('/admin/boost/simulator', data).then(unwrap<Record<string, unknown>>),
+  reap: () => api.post('/admin/boost/simulator/reap').then(unwrap<{ changed: number }>),
+}
+
+export const taskStatusText: Record<BoostTaskStatus, string> = {
+  PENDING: '排队中',
+  PROCESSING: '执行中',
+  WAIT_INPUT: '等待验证码',
+  SUCCESS: '已完成',
+  FAIL: '失败',
+  CANCELLED: '已取消',
+}
+
+export const bindingStatusText: Record<BoostBindingStatus, string> = {
+  PENDING: '等待验证',
+  PROCESSING: '验证中',
+  WAIT_INPUT: '等待验证码',
+  WAIT_USER: '等待游戏内确认',
+  SUCCESS: '已验证',
+  FAIL: '失败',
+  CANCELLED: '已取消',
+}
+
+export const statusTone = (s: string) =>
+  s === 'SUCCESS'
+    ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+    : s === 'FAIL'
+      ? 'bg-red-50 text-red-700 border-red-200'
+      : s === 'CANCELLED'
+        ? 'bg-muted text-muted-foreground border-border'
+        : s.startsWith('WAIT')
+          ? 'bg-amber-50 text-amber-800 border-amber-200'
+          : 'bg-sky-50 text-sky-700 border-sky-200'

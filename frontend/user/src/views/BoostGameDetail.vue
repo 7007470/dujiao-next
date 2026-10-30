@@ -88,7 +88,38 @@
               </ul>
               <p v-if="quoteError" class="text-xs text-destructive" role="alert">{{ quoteError }}</p>
 
-              <Button class="w-full" size="lg" :disabled="!plan || quoting" @click="submit">{{ t('boost.submit') }}</Button>
+              <!-- BOOST-EXT S5: 选择游戏账号并下单。价格只以服务端为准，请求里不带任何价格 -->
+              <template v-if="userAuthStore.isAuthenticated">
+                <div>
+                  <label for="boost-binding" class="mb-1 block text-sm font-medium">{{ t('boost.pickAccount') }}</label>
+                  <select
+                    v-if="verifiedBindings.length"
+                    id="boost-binding"
+                    v-model.number="bindingId"
+                    class="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                  >
+                    <option v-for="b in verifiedBindings" :key="b.id" :value="b.id">{{ b.display_name }} · {{ b.server_name }} · {{ b.login_masked }}</option>
+                  </select>
+                  <p v-else class="text-xs text-muted-foreground">
+                    {{ t('boost.noVerifiedAccount') }}
+                    <router-link :to="`/boost/accounts?game=${game.id}`" class="text-primary hover:underline">{{ t('boost.goAddAccount') }}</router-link>
+                  </p>
+                </div>
+                <p v-if="plan && available !== null && plan.total > available" class="text-xs text-destructive">{{ t('boost.notEnoughPoints') }}</p>
+
+                <div v-if="confirming && plan" class="space-y-2 rounded-lg border border-primary/40 bg-primary/5 p-3 text-sm" role="alertdialog" :aria-label="t('boost.confirmTitle')">
+                  <div class="font-medium">{{ t('boost.confirmTitle') }}</div>
+                  <p class="text-muted-foreground">{{ t('boost.confirmBody', { points: plan.total }) }}</p>
+                  <div class="flex gap-2">
+                    <Button class="flex-1" :disabled="ordering" @click="placeOrder">{{ t('boost.confirmOrder') }}</Button>
+                    <Button variant="outline" :disabled="ordering" @click="confirming = false">{{ t('boost.cancel') }}</Button>
+                  </div>
+                </div>
+                <Button v-else class="w-full" size="lg" :disabled="!plan || quoting || !bindingId" @click="submit">{{ t('boost.submit') }}</Button>
+              </template>
+              <router-link v-else :to="`/auth/login?redirect=${encodeURIComponent(route.fullPath)}`" class="block">
+                <Button class="w-full" size="lg">{{ t('boost.loginToOrder') }}</Button>
+              </router-link>
             </Card>
           </aside>
         </div>
@@ -99,9 +130,9 @@
 
 <script setup lang="ts">
 // BOOST-EXT: 用户端游戏详情：选择代练功能，按功能 JSON 自动生成表单，价格实时向服务端报价。
-// 账号绑定和下单在接入积分之后开放（计划 S4/S5）。
-import { onBeforeUnmount, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+// 选择已验证的游戏账号后下单：服务端重新编译报价并冻结积分，前端不传价格。
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import EmptyState from '../components/EmptyState.vue'
 import FeatureForm from '../components/boost/FeatureForm.vue'
@@ -111,10 +142,11 @@ import { getImageUrl } from '../utils/image'
 import { usePageSeo } from '../composables/usePageSeo'
 import { toast } from '../composables/useToast'
 import { useUserAuthStore } from '../stores/userAuth'
-import { boostAPI, boostPointsAPI, type BoostFeature, type BoostGame, type BoostPlan } from '../api/boost'
+import { boostAPI, boostPointsAPI, boostTaskAPI, newIdempotencyKey, type BoostBinding, type BoostFeature, type BoostGame, type BoostPlan } from '../api/boost'
 
 const { t } = useI18n()
 const route = useRoute()
+const router = useRouter()
 const userAuthStore = useUserAuthStore()
 
 const game = ref<BoostGame | null>(null)
@@ -128,6 +160,23 @@ const quoting = ref(false)
 const quoteError = ref('')
 const submitted = ref(false)
 const available = ref<number | null>(null)
+
+const bindings = ref<BoostBinding[]>([])
+const bindingId = ref(0)
+const verifiedBindings = computed(() => bindings.value.filter((b) => b.status === 'SUCCESS' && b.game_id === game.value?.id))
+const confirming = ref(false)
+const ordering = ref(false)
+let idempotencyKey = ''
+
+const loadBindings = async () => {
+  if (!userAuthStore.isAuthenticated || !game.value) return
+  try {
+    bindings.value = (await boostTaskAPI.bindings(game.value.id)).items
+    if (!verifiedBindings.value.some((b) => b.id === bindingId.value)) bindingId.value = verifiedBindings.value[0]?.id || 0
+  } catch {
+    bindings.value = []
+  }
+}
 
 const loadPoints = async () => {
   if (!userAuthStore.isAuthenticated) return
@@ -152,6 +201,7 @@ const load = async (code: string) => {
     features.value = data.features || []
     const wanted = Number(route.query.feature)
     selectFeature(features.value.find((f) => f.id === wanted) || features.value[0] || null)
+    void loadBindings()
   } catch (error) {
     console.error('Failed to load boost game:', error)
   } finally {
@@ -165,6 +215,7 @@ const selectFeature = (f: BoostFeature | null) => {
   params.value = {}
   plan.value = null
   submitted.value = false
+  confirming.value = false
   void requestQuote()
 }
 
@@ -187,6 +238,7 @@ const requestQuote = async () => {
   }
 }
 watch(params, () => {
+  confirming.value = false
   clearTimeout(timer)
   timer = setTimeout(requestQuote, 250)
 }, { deep: true })
@@ -198,7 +250,29 @@ const submit = () => {
     toast.error(t('boost.fixErrors'))
     return
   }
-  toast.info(t('boost.comingSoon'))
+  if (!bindingId.value) return
+  // 每次打开确认生成新的幂等键；确认按钮重试时保持不变
+  idempotencyKey = newIdempotencyKey()
+  confirming.value = true
+}
+
+const placeOrder = async () => {
+  if (!current.value || !bindingId.value) return
+  ordering.value = true
+  try {
+    const res = await boostTaskAPI.createTask({ binding_id: bindingId.value, feature_id: current.value.id, params: params.value, idempotency_key: idempotencyKey })
+    toast.success(t('boost.orderCreated', { no: res.task.task_no }))
+    confirming.value = false
+    void router.push(`/boost/tasks/${res.task.task_no}`)
+  } catch (err: any) {
+    // 积分不足、并发上限、参数错误：服务端给出原因；报价刷新一次
+    toast.error(err?.message || '')
+    confirming.value = false
+    void loadPoints()
+    void requestQuote()
+  } finally {
+    ordering.value = false
+  }
 }
 
 watch(() => route.params.code, (code) => {
